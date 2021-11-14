@@ -1,0 +1,4 @@
+plugins to download in the env
+pip install djangorestframework
+pip install django
+pip instal pylint-django 
