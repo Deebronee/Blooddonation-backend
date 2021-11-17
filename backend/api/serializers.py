@@ -5,8 +5,10 @@ class blood_donation_free_appointmentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = blood_donation_free_appointments
         fields = [
-        'id',
-        'date_time',
-        'num_pacients',
-        'num_taken',
+            'date',
+            'time' ,
+            'last_name',
+            'first_name',
+            'reserved',
+            'assigned',
         ]

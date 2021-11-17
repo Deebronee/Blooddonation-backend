@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.fields import DateTimeCheckMixin, DateTimeField
 # model classes pulling data from daterbase
 # Create your models here.
 
@@ -9,16 +8,19 @@ from django.db.models.fields import DateTimeCheckMixin, DateTimeField
     
 
 class blood_donation_free_appointments(models.Model):
-    date_time = models.DateTimeField()
-    num_pacients = models.IntegerField(default=0)
-    num_taken = models.IntegerField(default=0)
-    def __str__(self):
-        return 'free'
-
-class blood_donation_appointments(models.Model):
-    # The ID is generated automaticly
-    date_time = models.ForeignKey(blood_donation_free_appointments, on_delete=models.CASCADE) # date and time of appointment
+    date = models.DateField()
+    time = models.TimeField()
     last_name = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
+    reserved = models.BooleanField(default=0)
+    assigned = models.BooleanField(default=0)
     def __str__(self):
-        return self.date_time
+        return self.pk
+
+    
+class kill_questions(models.Model):
+    titel = models.CharField(max_length=100)
+    question = models.CharField(max_length=1000)
+    expected_answer = models.BooleanField()
+    def __str__(self):
+        return self.titel
