@@ -10,12 +10,13 @@ from django.db import models
 class blood_donation_free_appointments(models.Model):
     date = models.DateField()
     time = models.TimeField()
-    last_name = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100)
-    reserved = models.BooleanField(default=0)
-    assigned = models.BooleanField(default=0)
+    last_name = models.CharField(max_length=100 , blank=True)
+    first_name = models.CharField(max_length=100 , blank=True)
+    reserved = models.BooleanField()
+    assigned = models.BooleanField()
     def __str__(self):
-        return self.pk
+        return self.name
+
 
     
 class kill_questions(models.Model):
