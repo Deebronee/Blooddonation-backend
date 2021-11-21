@@ -7,7 +7,7 @@ from django.db import models
 
     
 
-class blood_donation_free_appointments(models.Model):
+class blood_donation_appointments(models.Model):
     date = models.DateField()
     time = models.TimeField()
     last_name = models.CharField(max_length=100 , blank=True)
@@ -21,7 +21,7 @@ class blood_donation_free_appointments(models.Model):
     
 class kill_questions(models.Model):
     titel = models.CharField(max_length=100)
-    question = models.CharField(max_length=1000)
+    question = models.TextField()
     expected_answer = models.BooleanField()
     def __str__(self):
         return self.titel
