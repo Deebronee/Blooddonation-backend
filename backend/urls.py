@@ -13,9 +13,9 @@ urlpatterns =[
     #path('', include(router.urls)),
     #path("free_appointments/", include("rest_framework.urls", namespace="rest_framework")),
 
-    path('blood_donation_free_appointments/', views.blood_donation_free_appointmentsList.as_view()),
-    path('blood_donation_reserved_appointments/', views.blood_donation_reserved_appointmentsList.as_view()),
-    path('blood_donation_assigned_appointments/', views.blood_donation_assigned_appointmentsList.as_view()),
+    path('free_appointments/', views.free_appointmentsList.as_view()),
+    path('reserved_appointments/', views.reserved_appointmentsList.as_view()),
+    path('assigned_appointments/', views.assigned_appointmentsList.as_view()),
     path('kill_questions/', views.kill_questionsList.as_view()),
     #path('blood_donation_free_appointments/<int:pk>', views.blood_donation_free_appointmentsDetail.as_view()),
 ]
