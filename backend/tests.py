@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
-from backend.models import blood_donation_appointments
+from backend.models import appointments
 
 # writing unit tests
 # Create your tests here.
@@ -8,7 +8,7 @@ from backend.models import blood_donation_appointments
 
 # Testing post requests to database appointments
 class TestPostAppointments(APITestCase):
-    url = '/blood_donation_free_appointments/'
+    url = '/free_appointments/'
 
     def testPost(self):
         """
@@ -24,17 +24,17 @@ class TestPostAppointments(APITestCase):
                 }
         response = self.client.post(self.url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(blood_donation_appointments.objects.count(), 1)
-        self.assertEqual(blood_donation_appointments.objects.get().last_name, "Mustermann")
+        self.assertEqual(appointments.appointments.objects.count(), 1)
+        self.assertEqual(appointments.appointments.objects.get().last_name, "Mustermann")
 
 
 
 # Testing get requests to database appointments
 class TestGetAppointments(APITestCase):
-    url = '/blood_donation_free_appointments/'
+    url = '/free_appointments/'
 
     def setUp(self):
-        blood_donation_appointments.objects.create(
+        appointments.appointments.objects.create(
             date = "2022-01-01",
             time = "10:00:00",
             last_name = "Mustermann",
@@ -52,7 +52,7 @@ class TestGetAppointments(APITestCase):
         self.assertEqual(result[0]['last_name'], "Mustermann")
 
 
-""""
+"""
 # Testing get requests to database appointments
 class TestGetAppointments(APITestCase):
     url = '/blood_donation_free_appointments/'
