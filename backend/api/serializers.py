@@ -1,12 +1,13 @@
 from rest_framework import fields, serializers
-from backend.models import blood_donation_appointments, kill_questions
+from backend.models.appointments import appointments
+from backend.models.kill_questions import kill_questions
 
-class blood_donation_appointmentsSerializer(serializers.ModelSerializer):
+class appointmentsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = blood_donation_appointments
+        model = appointments
         fields = [
             'date',
-            'time' ,
+            'time',
             'last_name',
             'first_name',
             'reserved',
