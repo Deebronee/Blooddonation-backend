@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+      Real Time Django Channels App
+    </title>
+  </head>
+  <body>
+    <h1 id="table1">{{ count }}</h1>
+  </body>
+    <script>
+        const socket = new WebSocket('ws://localhost:8000/ws/anzeigen/');
+
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
+            document.querySelector('#table1').innerText = data.message;
+        }
+    </script>
+</html>

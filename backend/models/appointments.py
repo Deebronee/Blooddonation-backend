@@ -10,4 +10,4 @@ class appointments(models.Model):
     reserved = models.BooleanField()
     assigned = models.BooleanField()
     def __str__(self):
-        return self.name
+        return self.id
