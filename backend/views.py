@@ -37,8 +37,5 @@ class kill_questionsList(generics.ListCreateAPIView):
     queryset = kill_questions.objects.all()
     serializer_class = kill_questionsSerializer
 
-
 def index(request):
-    appointmentsList = appointments.objects.all
-    return render(request, 'index.html', {'appointmentsList': appointmentsList})
-    
+    return render(request, 'backend/index.html')

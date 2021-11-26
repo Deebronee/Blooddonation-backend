@@ -33,14 +33,15 @@ ALLOWED_HOSTS = []
 # if a new app is created add it to this list
 
 INSTALLED_APPS = [
-    'django.contrib.admin', # admin interface   
-    'django.contrib.auth',  # authenticating users
+    'channels',
+    'backend',
+    'rest_framework',
+    'django.contrib.admin',
+    'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions', # Lagecy not nessesery
-    'django.contrib.messages', # disply one time notification
-    'django.contrib.staticfiles', # serving static fyles (images , css)
-    'backend.apps.BackendConfig', # my app
-    'rest_framework', # rest framework
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'bdbackend.wsgi.application'
+ASGI_APPLICATION = "bdbackend.asgi.application"
 
 
 # Database
