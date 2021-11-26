@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'channels',
     'backend',
     'rest_framework',
+    'djangochannelsrestframework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,6 +75,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bdbackend.wsgi.application'
 ASGI_APPLICATION = "bdbackend.asgi.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 # Database
@@ -131,3 +140,6 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+

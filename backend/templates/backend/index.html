@@ -61,18 +61,19 @@
         <div>
     </body>
     <script>
-        
-        const socket = new WebSocket('ws://${window.location.host}/ws/anzeigen')
-
-     
-
-        socket.onmessage = function(event) {
-            _this.appointments = JSON.parse(event.data);
-            console.log(_this.appointments);
-                }
-            }
-        }
-
-        createApp(AppointmentApp).mount('#app')
+        const ws = new WebSocketnew WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/backend/'
+        );
+        const ws.onopen = function(){
+        ws.send(JSON.stringify({
+        action: "subscribe_to_appointments_activity",
+        request_id: new Date().getTime(),
+    }))
+}
+const ws.onmessage = function(e){
+    console.log(e)
+}
     </script>
 </html>
