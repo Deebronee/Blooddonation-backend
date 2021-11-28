@@ -39,3 +39,4 @@ class kill_questionsList(generics.ListCreateAPIView):
 
 def index(request):
     return render(request, 'backend/index.html')
+
