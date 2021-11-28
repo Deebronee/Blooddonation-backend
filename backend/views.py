@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import generics, viewsets
-from backend.api.serializers import appointmentSerializer, donationQuestionSerializer, requestSerializer
+from backend.api.serializers import appointmentSerializer, donationQuestionSerializer, requestSerializer, personSerializer, capacitySerializer
 from .models.appointment import appointment
 from .models.donationQuestion import donationQuestion
 from .models.request import request

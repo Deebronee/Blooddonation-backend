@@ -7,5 +7,5 @@ class capacity(models.Model):
     duration = models.DurationField()
     slots = models.IntegerField()
 
-    def __str__(self):
+    def get_id(self):
         return self.id

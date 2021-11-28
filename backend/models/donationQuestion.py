@@ -1,9 +1,9 @@
 from django.db import models
 
 
-class kill_questions(models.Model):
+class donationQuestion(models.Model):
     body = models.TextField()
     isYesCorrect = models.BooleanField()
 
-    def __str__(self):
+    def get_id(self):
         return self.id

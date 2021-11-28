@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 # if a new app is created add it to this list
 
 INSTALLED_APPS = [
-    'channels',
+    #'channels',
     'backend',
     'rest_framework',
     'djangochannelsrestframework',
@@ -74,7 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'bdbackend.wsgi.application'
-ASGI_APPLICATION = "bdbackend.asgi.application"
+#ASGI_APPLICATION = "bdbackend.asgi.application"
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',

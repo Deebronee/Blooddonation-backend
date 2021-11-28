@@ -3,20 +3,8 @@ from backend.models.appointment import appointment
 from backend.models.donationQuestion import donationQuestion
 from backend.models.person import person
 from backend.models.request import request
+from backend.models.capacity import capacity
 
-class appointmentSerializer(serializers.ModelSerializer):
-    person_id = serializers.CharField(source = 'person.id')
-    request_id = serializers.CharField(sorce = 'request.id')
-
-    class Meta:
-        model = appointment
-        fields = [
-            'id',
-            'start',
-            'duration',
-            'person_id',
-            'request_id',
-        ]
 
 
 class personSerializer(serializers.ModelSerializer):
@@ -25,22 +13,48 @@ class personSerializer(serializers.ModelSerializer):
         model = person
         fields = [
             'id',
-            'name'
-            'birthday'
+            'name',
+            'birthday',
             'gender',
         ]
 
 
 class requestSerializer(serializers.ModelSerializer):
-    appointment_id = serializers.CharField(source = 'appointmend.id')
+
+    class Meta:
+        model = request
+        fields = [
+            'id',
+            'created',
+            'status',
+        ]
+
+
+class appointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = appointment
         fields = [
             'id',
-            'created',
-            'status',
-            'appointment_id',
+            'start',
+            'duration',
+            'person',
+            'request',
+        ]
+
+    
+       
+
+
+class capacitySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = capacity
+        fields = [
+            'id',
+            'start',
+            'duration',
+            'slots',
         ]
 
         
