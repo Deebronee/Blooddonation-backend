@@ -1,29 +1,55 @@
 from rest_framework import fields, serializers
-from backend.models.appointments import appointments
-from backend.models.kill_questions import kill_questions
+from backend.models.appointment import appointment
+from backend.models.donationQuestion import donationQuestion
+from backend.models.person import person
+from backend.models.request import request
 
-class appointmentsSerializer(serializers.ModelSerializer):
+class appointmentSerializer(serializers.ModelSerializer):
+    person_id = serializers.CharField(source = 'person.id')
+    request_id = serializers.CharField(sorce = 'request.id')
+
     class Meta:
-        model = appointments
+        model = appointment
         fields = [
-            'date',
-            'time',
-            'last_name',
-            'first_name',
-            'reserved',
-            'assigned',
+            'id',
+            'start',
+            'duration',
+            'person_id',
+            'request_id',
         ]
-        # This is so last and first name are not requiert to make a request 
-        extra_kwargs = {
-            'last_name' : {"required" : False},
-            'first_name' : {"required" : False}
-        }
-        
-class kill_questionsSerializer(serializers.ModelSerializer):
+
+
+class personSerializer(serializers.ModelSerializer):
+    
     class Meta:
-        model = kill_questions
+        model = person
+        fields = [
+            'id',
+            'name'
+            'birthday'
+            'gender',
+        ]
+
+
+class RequestSerializer(serializers.ModelSerializer):
+    appointment_id = serializers.CharField(source = 'appointmend.id')
+
+    class Meta:
+        model = appointment
+        fields = [
+            'id',
+            'created',
+            'status',
+            'appointment_id',
+        ]
+
+        
+class donationQuestion(serializers.ModelSerializer):
+    class Meta:
+        model = donationQuestion
         fields = [
             'titel',
             'question' ,
             'expected_answer',
         ]
+
