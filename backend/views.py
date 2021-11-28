@@ -4,6 +4,7 @@ from rest_framework import generics, viewsets
 from backend.api.serializers import appointmentsSerializer, kill_questionsSerializer
 from .models.appointments import appointments
 from .models.kill_questions import kill_questions
+
 # request handler
 # Create your views here.
 # request --> response
@@ -35,3 +36,7 @@ class appointmentsDetail(generics.RetrieveUpdateDestroyAPIView):
 class kill_questionsList(generics.ListCreateAPIView):
     queryset = kill_questions.objects.all()
     serializer_class = kill_questionsSerializer
+
+def index(request):
+    return render(request, 'backend/index.html')
+

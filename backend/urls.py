@@ -3,6 +3,7 @@ from django.urls import path, include
 from . import views
 from rest_framework import routers
 
+
 #URLConf
 #router = routers.DefaultRouter()
 #router.register(r'appointments',views.ApintmentsViewSet) #registers the rout to appointments
@@ -18,4 +19,5 @@ urlpatterns =[
     path('assigned_appointments/', views.assigned_appointmentsList.as_view()),
     path('kill_questions/', views.kill_questionsList.as_view()),
     #path('blood_donation_free_appointments/<int:pk>', views.blood_donation_free_appointmentsDetail.as_view()),
+    path('', views.index, name = 'index')
 ]

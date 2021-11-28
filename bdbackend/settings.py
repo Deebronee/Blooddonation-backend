@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,14 +33,16 @@ ALLOWED_HOSTS = []
 # if a new app is created add it to this list
 
 INSTALLED_APPS = [
-    'django.contrib.admin', # admin interface   
-    'django.contrib.auth',  # authenticating users
+    'channels',
+    'backend',
+    'rest_framework',
+    'djangochannelsrestframework',
+    'django.contrib.admin',
+    'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions', # Lagecy not nessesery
-    'django.contrib.messages', # disply one time notification
-    'django.contrib.staticfiles', # serving static fyles (images , css)
-    'backend.apps.BackendConfig', # my app
-    'rest_framework', # rest framework
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +74,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'bdbackend.wsgi.application'
+ASGI_APPLICATION = "bdbackend.asgi.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 # Database
@@ -121,8 +133,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
