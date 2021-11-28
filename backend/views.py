@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import generics, viewsets
-from backend.api.serializers import appointmentsSerializer, kill_questionsSerializer
-from .models.appointments import appointments
-from .models.kill_questions import kill_questions
+from backend.api.serializers import appointmentSerializer, donationQuestionSerializer, requestSerializer
+from .models.appointment import appointment
+from .models.donationQuestion import donationQuestion
+from .models.request import request
+from .models.person import person
+from .models.capacity import capacity
 
 # request handler
 # Create your views here.
@@ -15,28 +18,52 @@ class ApintmentsViewSet(viewsets.ModelViewSet):
 '''
 
 # creates get and post 
-class free_appointmentsList(generics.ListCreateAPIView): 
-    queryset = appointments.objects.filter(reserved = False , assigned = False) # Checking for all that are not reserved and not assigned so that are free
-    serializer_class = appointmentsSerializer
+class free_appointmentList(generics.ListCreateAPIView): 
+    queryset = appointment.objects.all() # Checking for all that are not reserved and not assigned so that are free
+    serializer_class = appointmentSerializer
     
-class reserved_appointmentsList(generics.ListCreateAPIView): 
-    queryset = appointments.objects.filter(reserved = True , assigned = False) # Checking for all that are reserved and not assigned so that are ready to be accepted
-    serializer_class = appointmentsSerializer
-    
-class assigned_appointmentsList(generics.ListCreateAPIView): 
-    queryset = appointments.objects.filter(reserved = True , assigned = True) # Checking for all that are reserved and  assigned so that are accepted
-    serializer_class = appointmentsSerializer
+# creates ,update ,deleate ,patch
+class appointmentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = appointment.objects.all()
+    serializer_class = appointmentSerializer 
+
+
+# creates get and post 
+class requestList(generics.ListCreateAPIView):
+    queryset = request.objects.all()
+    serializer_class = requestSerializer
 
 # creates ,update ,deleate ,patch
-class appointmentsDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = appointments.objects.all()
-    serializer_class = appointmentsSerializer 
+class requestDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = appointment.objects.all()
+    serializer_class = requestSerializer 
 
 
-class kill_questionsList(generics.ListCreateAPIView):
-    queryset = kill_questions.objects.all()
-    serializer_class = kill_questionsSerializer
+# creates get and post 
+class personList(generics.ListCreateAPIView):
+    queryset = person.objects.all()
+    serializer_class = personSerializer
+
+# creates ,update ,deleate ,patch
+class personDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = person.objects.all()
+    serializer_class = personSerializer 
+
+
+# creates get and post 
+class capacityList(generics.ListCreateAPIView):
+    queryset = capacity.objects.all()
+    serializer_class = capacitySerializer
+
+# creates ,update ,deleate ,patch
+class capacityDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = capacity.objects.all()
+    serializer_class = capacitySerializer 
+
+
+class donationQuestion(generics.ListCreateAPIView):
+    queryset = donationQuestion.objects.all()
+    serializer_class = donationQuestionSerializer
 
 def index(request):
     return render(request, 'backend/index.html')
-

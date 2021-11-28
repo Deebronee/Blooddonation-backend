@@ -31,7 +31,7 @@ class personSerializer(serializers.ModelSerializer):
         ]
 
 
-class RequestSerializer(serializers.ModelSerializer):
+class requestSerializer(serializers.ModelSerializer):
     appointment_id = serializers.CharField(source = 'appointmend.id')
 
     class Meta:
@@ -44,7 +44,7 @@ class RequestSerializer(serializers.ModelSerializer):
         ]
 
         
-class donationQuestion(serializers.ModelSerializer):
+class donationQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = donationQuestion
         fields = [
