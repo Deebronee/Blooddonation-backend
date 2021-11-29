@@ -2,25 +2,31 @@ version: "3.9"
    
 services:
   db:
-    image: postgres
+    image: mysql:5.7
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./d_db:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_HOST: "172.20.0.4"
+      MYSQL_HOST: "172.20.0.4"
 
   redis:
     image: redis:5
 
   django:
     build: .
-    command: python manage.py runserver
     volumes:
-      - .:/code
+      - ./d_django:/code
     ports:
       - "8000:8000"
-      - "8001:8001"
     environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - DB_NAME=wordpress
+      - DB_USER=root
+      - DB_PASSWORD=wordpress
     depends_on:
       - db
       - redis
