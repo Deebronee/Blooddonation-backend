@@ -18,9 +18,19 @@ class ApintmentsViewSet(viewsets.ModelViewSet):
 '''
 
 # creates get and post 
-class free_appointmentList(generics.ListCreateAPIView): 
-    queryset = appointment.objects.all() # Checking for all that are not reserved and not assigned so that are free
+class free_appointmentList(generics.ListCreateAPIView):
     serializer_class = appointmentSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = appointment.objects.all()
+        start = self.request.query_params.get('start')
+        if start is not None:
+            queryset = queryset.filter(appointment__start=start)
+        return queryset
     
 # creates ,update ,deleate ,patch
 class appointmentDetail(generics.RetrieveUpdateDestroyAPIView):
