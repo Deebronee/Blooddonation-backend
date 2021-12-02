@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, response
 from rest_framework import generics, serializers, viewsets
 from rest_framework.views import APIView
-from rest_framework.decorators import Response
+#from rest_framework.decorators import Response
 from backend.api.serializers import faqQuestionSerializer ,appointmentSerializer, donationQuestionSerializer, requestSerializer, personSerializer, capacitySerializer
 from .models.appointment import appointment
 from .models.donationQuestion import donationQuestion
@@ -16,7 +16,7 @@ from .models.faqQuestion import faqQuestion
 # request --> response
 
 # creates get and post 
-class appointmentsList(APIView):
+'''class appointmentsList(APIView):
     def get(self, request, date, format=None):
         free_List = []
         appointmentLength = 60                                                            # one slot is one hour, in minutes
@@ -33,7 +33,7 @@ class appointmentsList(APIView):
                         free_List.append(j)
                     # die daten typen sind noch nicht richtig aber habe es bis jetzt noch nicht richitg inbekommen
         serializer = appointmentSerializer(free_List)
-        return Response(serializer.data)
+        return Response(serializer.data)'''
 
 class free_appointmentList(APIView): 
     queryset = appointment.objects.all() # Checking for all that are not reserved and not assigned so that are free
@@ -43,7 +43,7 @@ class donationQuestionList(generics.ListCreateAPIView):
     queryset = donationQuestion.objects.all()
     serializer_class = donationQuestionSerializer
 
-class faqQuestions(generics.ListCreateAPIView):
+class faqQuestionsList(generics.ListCreateAPIView):
     queryset = faqQuestion.objects.all()
     serializer_class = faqQuestionSerializer
 
