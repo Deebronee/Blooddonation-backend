@@ -41,7 +41,7 @@ class appointmentsList(APIView):
             durationOfN = capacity.get_duration(capacities[n])                           # how long is capacaty n
             slotsOfN = capacity.get_slots(capacities[n])                                  # how many slots are there in the capacaty
             for i in range(1380 // appointmentLength) :                                         # a day has 1440 minutes 
-                j = i*appointmentLength
+                #j = i*appointmentLength
                 time_j = time(i,00,00)                                                   # devide i by the appointmentlength to get the right slot of the day 
                 #if startOfN_datetime <= time_j and (startOfN_datetime + timedelta(minutes=durationOfN)) <= (time_j + timedelta(minutes=appointmentLength)) :  # checking if the time of the day is after the start of the timeslot and bevor the end of the timeslot - one timesolt
                 endCap = addTime(startOfN_datetime, timedelta(minutes=durationOfN))
@@ -49,14 +49,12 @@ class appointmentsList(APIView):
                 if startOfN_datetime <= time_j and (endCap >= endApp):
                     for k in range((slotsOfN - len(reserved.filter(time=time_j)))):    
                         
+                        dt = datetime.combine(parse_date(date_str), time_j)
                         data = {}
-                        data['date'] = date_str
-                        data['time'] = time_j.strftime('%H:%M:%S')
+                        data['datetime'] = dt
                         data['duration'] = appointmentLength
                         
-                        free_List.append(data)
-                    
-                                                                                       # of the ammount of reserved slots is lower then the ammount of overall slots than 
+                        free_List.append(data)                                           # of the ammount of reserved slots is lower then the ammount of overall slots than 
 
         return Response(free_List) 
 
@@ -149,15 +147,15 @@ class appointmentDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = appointmentSerializer '''
 
 
-'''# creates get and post 
+# creates get and post 
 class requestList(generics.ListCreateAPIView):
     queryset = request.objects.all()
-    serializer_class = requestSerializer'''
+    serializer_class = requestSerializer
 
-'''# creates ,update ,deleate ,patch
+# creates ,update ,deleate ,patch
 class requestDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = appointment.objects.all()
-    serializer_class = requestSerializer '''
+    serializer_class = requestSerializer 
 
 
 '''# creates get and post 

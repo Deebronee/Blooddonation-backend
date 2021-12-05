@@ -32,6 +32,7 @@ class requestSerializer(serializers.ModelSerializer):
 
 
 class appointmentSerializer(serializers.ModelSerializer):
+    request = requestSerializer(read_only=True)
 
     class Meta:
         model = appointment
