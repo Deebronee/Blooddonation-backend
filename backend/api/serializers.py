@@ -45,7 +45,15 @@ class appointmentSerializer(serializers.ModelSerializer):
             'request',
         ]
 
-    
+class requestIDSerializer(serializers.ModelSerializer):
+    request = requestSerializer(read_only=True)
+
+    class Meta:
+        model = appointment
+        fields = [
+            'id',
+            'request',
+        ]    
        
 
 

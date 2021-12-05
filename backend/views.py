@@ -3,7 +3,7 @@ from django.http import HttpResponse, response
 from rest_framework import generics, serializers, viewsets
 from rest_framework.views import APIView
 #from rest_framework.decorators import Response
-from backend.api.serializers import faqQuestionSerializer ,appointmentSerializer, donationQuestionSerializer, requestSerializer, personSerializer, capacitySerializer
+from backend.api.serializers import faqQuestionSerializer ,appointmentSerializer, donationQuestionSerializer, requestIDSerializer, requestSerializer, personSerializer, capacitySerializer
 from .models.appointment import appointment
 from .models.donationQuestion import donationQuestion
 from .models.request import request
@@ -57,6 +57,8 @@ class appointmentsList(APIView):
                         free_List.append(data)                                           # of the ammount of reserved slots is lower then the ammount of overall slots than 
 
         return Response(free_List) 
+
+    
 
 
 
@@ -129,6 +131,25 @@ class appointmentsList(APIView):
 class free_appointmentList(generics.ListCreateAPIView): 
     queryset = appointment.objects.all() # Checking for all that are not reserved and not assigned so that are free
     serializer_class = appointmentSerializer
+
+    def get_queryset(self):
+        queryset = appointment.objects.all()
+        id = self.request.query_params.get('id')
+        if id is not None:
+            queryset = queryset.filter(id=id)
+            
+        return queryset
+
+
+class statusView(generics.ListCreateAPIView):
+    serializer_class = requestIDSerializer
+
+    def get_queryset(self):
+        id = self.request.query_params.get('id')
+        queryset = appointment.objects.filter(id=id)
+            
+        return queryset
+
 
 class donationQuestionList(generics.ListCreateAPIView):
     queryset = donationQuestion.objects.all()

@@ -18,6 +18,7 @@ urlpatterns =[
     #path('reserved_appointments/', views.reserved_appointmentsList.as_view()),
     #path('assigned_appointments/', views.assigned_appointmentsList.as_view()),
     path('appointments_list/', views.free_appointmentList.as_view()),
+    path('appointment_status', views.statusView.as_view()),
     path('faqQuestions/', views.faqQuestionsList.as_view()),
     #path('appointment/', views.free_appointmentList.as_view()),
     path('request/', views.requestList.as_view()),
