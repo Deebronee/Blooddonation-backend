@@ -12,8 +12,13 @@ from .models.capacity import capacity
 from .models.faqQuestion import faqQuestion
 from rest_framework.response import Response
 import json
-from datetime import time, timedelta
+from datetime import time, timedelta, datetime, date
 from django.utils.dateparse import parse_date
+
+
+
+def addTime(setTime, timeToAdd):
+        return ((datetime.combine(date.today(), setTime) + timeToAdd).time()) 
 
 
 # request handler
@@ -22,6 +27,7 @@ from django.utils.dateparse import parse_date
 
 # creates get and post 
 class appointmentsList(APIView):
+
     def get(self, request, format=None):
         free_List = []                                                                      
         appointmentLength = int(60)                     
@@ -30,22 +36,75 @@ class appointmentsList(APIView):
         reserved = appointment.objects.filter(date = parse_date(date_str))                               # geting all reserved appointments of a certan day 
         capacities = capacity.objects.filter(date = parse_date(date_str))                                      # geting all pacacatys of a certan ay 
         for n in range(len(capacities)):                                                         # going over all capacatys of the day
-            startOfN = capacity.get_time(capacities[n])                                    # when does capacaty n start 
+            startOfN = capacity.get_time(capacities[n])  
+            startOfN_datetime = datetime.strptime(startOfN, "%H:%M:%S").time()                                # when does capacaty n start 
             durationOfN = capacity.get_duration(capacities[n])                           # how long is capacaty n
             slotsOfN = capacity.get_slots(capacities[n])                                  # how many slots are there in the capacaty
-            for i in range(1440 // appointmentLength) :                                         # a day has 1440 minutes 
+            for i in range(1380 // appointmentLength) :                                         # a day has 1440 minutes 
                 j = i*appointmentLength
-                time_j = time(j,00,00,000000)                                                   # devide i by the appointmentlength to get the right slot of the day 
-                if startOfN <= time_j and (startOfN + timedelta(minutes=durationOfN)) <= (time_j + timedelta(minutes=appointmentLength)) :  # checking if the time of the day is after the start of the timeslot and bevor the end of the timeslot - one timesolt
-                    for k in range((slotsOfN - len(reserved.filter(time=time_j)))):     
+                time_j = time(i,00,00)                                                   # devide i by the appointmentlength to get the right slot of the day 
+                #if startOfN_datetime <= time_j and (startOfN_datetime + timedelta(minutes=durationOfN)) <= (time_j + timedelta(minutes=appointmentLength)) :  # checking if the time of the day is after the start of the timeslot and bevor the end of the timeslot - one timesolt
+                endCap = addTime(startOfN_datetime, timedelta(minutes=durationOfN))
+                endApp = addTime(time_j, timedelta(minutes=appointmentLength))
+                if startOfN_datetime <= time_j and (endCap >= endApp):
+                    for k in range((slotsOfN - len(reserved.filter(time=time_j)))):    
+                        
+                        data = {}
+                        data['date'] = date_str
+                        data['time'] = time_j.strftime('%H:%M:%S')
+                        data['duration'] = appointmentLength
+                        
+                        free_List.append(data)
+                    
+                                                                                       # of the ammount of reserved slots is lower then the ammount of overall slots than 
+
+        return Response(free_List) 
+
+
+
+
+
+    
+    '''
+    def get(self, request, format=None):
+        free_List = []                                                                      
+        appointmentLength = int(60)                     
+        # access date via request                                                         # one slot is one hour, in minutes
+        date_str = str(request.GET.get('date'))
+        reserved = appointment.objects.filter(date = parse_date(date_str))                               # geting all reserved appointments of a certan day 
+        capacities = capacity.objects.filter(date = parse_date(date_str))                                      # geting all pacacatys of a certan ay 
+        for n in range(len(capacities)):                                                         # going over all capacatys of the day
+            startOfN = capacity.get_time(capacities[n])  
+            startOfN_datetime = datetime.strptime(startOfN, "%H:%M:%S").time()                                # when does capacaty n start 
+            durationOfN = capacity.get_duration(capacities[n])                           # how long is capacaty n
+            slotsOfN = capacity.get_slots(capacities[n])                                  # how many slots are there in the capacaty
+            for i in range(1380 // appointmentLength) :                                         # a day has 1440 minutes 
+                j = i*appointmentLength
+                time_j = time(i,00,00)                                                   # devide i by the appointmentlength to get the right slot of the day 
+                #if startOfN_datetime <= time_j and (startOfN_datetime + timedelta(minutes=durationOfN)) <= (time_j + timedelta(minutes=appointmentLength)) :  # checking if the time of the day is after the start of the timeslot and bevor the end of the timeslot - one timesolt
+                endCap = addTime(startOfN_datetime, timedelta(minutes=durationOfN))
+                endApp = addTime(time_j, timedelta(minutes=appointmentLength))
+                if startOfN_datetime <= time_j and (endCap >= endApp):
+                    for k in range((slotsOfN - len(reserved.filter(time=time_j)))):    
                                                                                        # of the ammount of reserved slots is lower then the ammount of overall slots than 
                         free_List.append('{"date": ' + date_str + ', '
-                                        + '"time": ' + time_j + ', '
-                                        + '"duration": ' + appointmentLength + '}')
+                                        + '"time": ' +  time_j.strftime('%H:%M:%S') + ', '
+                                        + '"duration": ' + str(appointmentLength) + '}')
 
-        addComma = ', '.join(free_List)       # die daten typen sind noch nicht richtig aber habe es bis jetzt noch nicht richitg inbekommen
+        addComma = ', '.join(free_List)                                                             # die daten typen sind noch nicht richtig aber habe es bis jetzt noch nicht richitg inbekommen
         addBrackets = "[" + addComma + "]"
-        return Response(str(addBrackets))            # to string
+        json_list = json.loads(r"""addBrackets""")
+        return Response(json_list)                                                           # to string
+    '''
+
+
+
+
+
+
+
+
+       
 
 '''
 class appointmentsList(APIView):

@@ -15,7 +15,7 @@ class appointment(models.Model):
         return self.id
 
     def get_time(self):
-        return self.time
+        return str(self.time)
 
     def get_time_hour(self):
         return self.time.hour
