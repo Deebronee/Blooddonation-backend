@@ -1,32 +1,18 @@
 version: "3.9"
    
 services:
-  db:
-    image: mysql:5.7
-    volumes:
-      - ./d_db:/var/lib/mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: wordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
-      MYSQL_ROOT_HOST: "172.20.0.4"
-      MYSQL_HOST: "172.20.0.4"
-
   redis:
     image: redis:5
 
   django:
     build: .
     volumes:
-      - ./d_django:/code
+      - /srv/db_django:/code
     ports:
-      - "8000:8000"
+      - "5000:8000"
     environment:
       - DB_NAME=wordpress
       - DB_USER=root
       - DB_PASSWORD=wordpress
     depends_on:
-      - db
       - redis
