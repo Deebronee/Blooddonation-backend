@@ -26,7 +26,7 @@ def addTime(setTime, timeToAdd):
 # request --> response
 
 # creates get and post 
-class appointmentsList(APIView):
+class freeAppointmentsView(APIView):
 
     def get(self, request, format=None):
         free_List = []                                                                      
@@ -58,78 +58,17 @@ class appointmentsList(APIView):
 
         return Response(free_List) 
 
-    
+class appointmentStatusView(generics.ListCreateAPIView):
+    serializer_class = requestIDSerializer
+
+    def get_queryset(self):
+        id = self.request.query_params.get('id')
+        queryset = appointment.objects.filter(id=id)
+            
+        return queryset
 
 
-
-
-
-    
-    '''
-    def get(self, request, format=None):
-        free_List = []                                                                      
-        appointmentLength = int(60)                     
-        # access date via request                                                         # one slot is one hour, in minutes
-        date_str = str(request.GET.get('date'))
-        reserved = appointment.objects.filter(date = parse_date(date_str))                               # geting all reserved appointments of a certan day 
-        capacities = capacity.objects.filter(date = parse_date(date_str))                                      # geting all pacacatys of a certan ay 
-        for n in range(len(capacities)):                                                         # going over all capacatys of the day
-            startOfN = capacity.get_time(capacities[n])  
-            startOfN_datetime = datetime.strptime(startOfN, "%H:%M:%S").time()                                # when does capacaty n start 
-            durationOfN = capacity.get_duration(capacities[n])                           # how long is capacaty n
-            slotsOfN = capacity.get_slots(capacities[n])                                  # how many slots are there in the capacaty
-            for i in range(1380 // appointmentLength) :                                         # a day has 1440 minutes 
-                j = i*appointmentLength
-                time_j = time(i,00,00)                                                   # devide i by the appointmentlength to get the right slot of the day 
-                #if startOfN_datetime <= time_j and (startOfN_datetime + timedelta(minutes=durationOfN)) <= (time_j + timedelta(minutes=appointmentLength)) :  # checking if the time of the day is after the start of the timeslot and bevor the end of the timeslot - one timesolt
-                endCap = addTime(startOfN_datetime, timedelta(minutes=durationOfN))
-                endApp = addTime(time_j, timedelta(minutes=appointmentLength))
-                if startOfN_datetime <= time_j and (endCap >= endApp):
-                    for k in range((slotsOfN - len(reserved.filter(time=time_j)))):    
-                                                                                       # of the ammount of reserved slots is lower then the ammount of overall slots than 
-                        free_List.append('{"date": ' + date_str + ', '
-                                        + '"time": ' +  time_j.strftime('%H:%M:%S') + ', '
-                                        + '"duration": ' + str(appointmentLength) + '}')
-
-        addComma = ', '.join(free_List)                                                             # die daten typen sind noch nicht richtig aber habe es bis jetzt noch nicht richitg inbekommen
-        addBrackets = "[" + addComma + "]"
-        json_list = json.loads(r"""addBrackets""")
-        return Response(json_list)                                                           # to string
-    '''
-
-
-
-
-
-
-
-
-       
-
-'''
-class appointmentsList(APIView):
-    def get(self, request, date, format=None):
-        free_List = []
-        appointmentLength = 60                                                            # one slot is one hour, in minutes
-        reserved = appointment.objects.filter(date = date)                                # geting all reserved appointments of a certan day 
-        capacities = capacity.objects.filter(date = date)                                 # geting all pacacatys of a certan ay 
-        for n in len(capacities):                                                         # going over all capacatys of the day
-            startOfN = capacity.get_time(capacities[n])                                   # when does capacaty n start 
-            durationOfN = capacity.get_duration(capacities[n])                            # how long is capacaty n
-            slotsOfN = capacity.get_slots(capacities[n])                                  # how many slots are there in the capacaty
-            for i in (1440 / appointmentLength) :                                         # a day has 1440 minutes 
-                j = i*appointmentLength                                                   # devide i by the appointmentlength to get the right slot of the day 
-                if startOfN >= j and (startOfN + durationOfN - appointmentLength ) < j :  # checking if the time of the day is after the start of the timeslot and bevor the end of the timeslot - one timesolt
-                    if len(reserved.filter(time = j)) < slotsOfN:                         # of the ammount of reserved slots is lower then the ammount of overall slots than 
-                        free_List.append(j)
-                    # die daten typen sind noch nicht richtig aber habe es bis jetzt noch nicht richitg inbekommen
-        serializer = appointmentSerializer(free_List)
-        return Response(serializer.data)
-'''
-
-
-class free_appointmentList(generics.ListCreateAPIView): 
-    queryset = appointment.objects.all() # Checking for all that are not reserved and not assigned so that are free
+class appointmentCreate(generics.ListCreateAPIView): 
     serializer_class = appointmentSerializer
 
     def get_queryset(self):
@@ -141,14 +80,7 @@ class free_appointmentList(generics.ListCreateAPIView):
         return queryset
 
 
-class statusView(generics.ListCreateAPIView):
-    serializer_class = requestIDSerializer
 
-    def get_queryset(self):
-        id = self.request.query_params.get('id')
-        queryset = appointment.objects.filter(id=id)
-            
-        return queryset
 
 
 class donationQuestionList(generics.ListCreateAPIView):
