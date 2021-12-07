@@ -1,4 +1,4 @@
-from rest_framework import fields, serializers
+from rest_framework import fields, serializers, viewsets
 from backend.models.appointment import appointment
 from backend.models.donationQuestion import donationQuestion
 from backend.models.person import person
@@ -33,7 +33,7 @@ class requestSerializer(serializers.ModelSerializer):
 
 class appointmentSerializer(serializers.ModelSerializer):
     request = requestSerializer(read_only=True)
-    person = personSerializer(read_only=True)
+    person = personSerializer()
 
     class Meta:
         model = appointment
@@ -45,6 +45,17 @@ class appointmentSerializer(serializers.ModelSerializer):
             'person',
             'request',
         ]
+
+    
+    def create(self, validated_data):
+        person_data = validated_data.pop('person')
+        newPerson = person.objects.create(**person_data)
+        newAppointment = appointment.objects.create(person = newPerson, **validated_data)
+        
+        return newAppointment
+    
+
+
 
 class requestIDSerializer(serializers.ModelSerializer):
     request = requestSerializer(read_only=True)
