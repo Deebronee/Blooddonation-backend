@@ -29,7 +29,7 @@ urlpatterns =[
     #path('assigned_appointments/', views.assigned_appointmentsList.as_view()),
     #path('appointment/', views.free_appointmentList.as_view()),
     path('request/', views.requestList.as_view()),
-    #path('person/', views.personList.as_view()),
+    path('person/', views.personList.as_view()),
     path('capacity/', views.capacityList.as_view()),
     #path('', views.index, name = 'index')
 ]

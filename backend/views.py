@@ -14,6 +14,8 @@ from rest_framework.response import Response
 import json
 from datetime import time, timedelta, datetime, date
 from django.utils.dateparse import parse_date
+from rest_framework import status
+
 
 
 
@@ -79,6 +81,25 @@ class appointmentCreate(generics.ListCreateAPIView):
             
         return queryset
 
+    
+    def post(self, request):
+        newPerson = person.objects.create(
+                            name = request.data.get('person', dict()).get('name'), 
+                            birthday = request.data.get('person', dict()).get('birthday'), 
+                            gender = request.data.get('person', dict()).get('gender'))
+        
+        data = {
+                'date': request.data.get('date'),
+                'time': request.data.get('time'),
+                'duration': request.data.get('duration'),
+                'person': newPerson.id
+                }
+        
+        serializer = appointmentSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -111,15 +132,15 @@ class requestDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = requestSerializer 
 
 
-'''# creates get and post 
+# creates get and post 
 class personList(generics.ListCreateAPIView):
     queryset = person.objects.all()
-    serializer_class = personSerializer'''
+    serializer_class = personSerializer
 
-'''# creates ,update ,deleate ,patch
+# creates ,update ,deleate ,patch
 class personDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = person.objects.all()
-    serializer_class = personSerializer '''
+    serializer_class = personSerializer 
 
 
 # creates get and post 
