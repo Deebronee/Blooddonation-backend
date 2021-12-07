@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, response
 from rest_framework import generics, serializers, viewsets
 from rest_framework.views import APIView
@@ -82,25 +82,6 @@ class appointmentCreate(generics.ListCreateAPIView):
         return queryset
 
     
-    def post(self, request):
-        newPerson = person.objects.create(
-                            name = request.data.get('person', dict()).get('name'), 
-                            birthday = request.data.get('person', dict()).get('birthday'), 
-                            gender = request.data.get('person', dict()).get('gender'))
-        
-        data = {
-                'date': request.data.get('date'),
-                'time': request.data.get('time'),
-                'duration': request.data.get('duration'),
-                'person': newPerson.id
-                }
-        
-        serializer = appointmentSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 
