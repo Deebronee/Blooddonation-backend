@@ -39,8 +39,7 @@ class appointmentSerializer(serializers.ModelSerializer):
         model = appointment
         fields = [
             'id',
-            'date',
-            'time',
+            'start',
             'duration',
             'person',
             'request',
@@ -75,8 +74,7 @@ class capacitySerializer(serializers.ModelSerializer):
         model = capacity
         fields = [
             'id',
-            'date',
-            'time',
+            'start',
             'duration',
             'slots',
         ]

@@ -7,8 +7,9 @@ from django.dispatch import receiver
 import json
 
 class appointment(models.Model):
-    date = models.DateField()
-    time = models.TimeField()
+    #date = models.DateField()
+    #time = models.TimeField()
+    start = models.DateTimeField()
     #duration = models.DurationField()
     duration = models.IntegerField()
     person = models.ForeignKey(person, on_delete=models.CASCADE, blank = True, null = True)
@@ -17,8 +18,8 @@ class appointment(models.Model):
     def get_id(self):
         return self.id
 
-    def get_time(self):
-        return str(self.time)
+    def get_start(self):
+        return self.start
 
     def get_time_hour(self):
         return self.time.hour
