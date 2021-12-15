@@ -15,6 +15,7 @@ import json
 from datetime import time, timedelta, datetime, date
 from django.utils.dateparse import parse_date
 from rest_framework import status
+import math
 
 
 
@@ -32,7 +33,7 @@ class freeAppointmentsView(APIView):
 
     def get(self, request, format=None):
         free_List = []                                                                      
-        appointmentLength = int(60)                     
+        appointmentLength = int(10)                     
         # access date via request                                                         # one slot is one hour, in minutes
         date_str = str(request.GET.get('date'))
         reserved = appointment.objects.filter(date = parse_date(date_str))                               # geting all reserved appointments of a certan day 
@@ -44,7 +45,7 @@ class freeAppointmentsView(APIView):
             slotsOfN = capacity.get_slots(capacities[n])                                  # how many slots are there in the capacaty
             for i in range(1380 // appointmentLength) :                                         # a day has 1440 minutes 
                 #j = i*appointmentLength
-                time_j = time(i,00,00)                                                   # devide i by the appointmentlength to get the right slot of the day 
+                time_j = time(math.floor((i*appointmentLength)/60),(i*appointmentLength)%60,00)                                          # devide i by the appointmentlength to get the right slot of the day 
                 #if startOfN_datetime <= time_j and (startOfN_datetime + timedelta(minutes=durationOfN)) <= (time_j + timedelta(minutes=appointmentLength)) :  # checking if the time of the day is after the start of the timeslot and bevor the end of the timeslot - one timesolt
                 endCap = addTime(startOfN_datetime, timedelta(minutes=durationOfN))
                 endApp = addTime(time_j, timedelta(minutes=appointmentLength))
