@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, response
 from rest_framework import generics, serializers, viewsets
@@ -13,7 +14,7 @@ from .models.faqQuestion import faqQuestion
 from rest_framework.response import Response
 import json
 from datetime import time, timedelta, datetime, date
-from django.utils.dateparse import parse_date
+from django.utils.dateparse import parse_date, parse_datetime, parse_time
 from rest_framework import status
 import math
 
@@ -34,7 +35,7 @@ class freeAppointmentsView(APIView):
     def get(self, request, format=None):
         free_List = []         
         # appointment length should be exchangeable Verwaltungsoberfläche                                                          
-        appointmentLength = int(60)                     
+        appointmentLength = int(60)                                             # in minuten                     
         # access date via request                                                         # one slot is one hour, in minutes
         date_str = parse_date(str(request.GET.get('date')))
         reserved = appointment.objects.filter(start__date = date_str)                               # geting all reserved appointments of a certan day 
@@ -82,6 +83,37 @@ class appointmentCreate(generics.ListCreateAPIView):
             queryset = queryset.filter(id=id)
             
         return queryset
+    
+    def post(self, request, format=None):
+        serializer = appointmentSerializer(data = request.data)
+        # appointment length should be exchangeable Verwaltungsoberfläche                                                          
+        appointmentLength = int(60)                                             # in minuten                     
+        # access date via request                                                         # one slot is one hour, in minutes
+        start = parse_datetime(str(request.data.get('start')))
+        start_date = start.date()
+        start_time = start.time()
+        reserved = appointment.objects.filter(start = start)                               # geting all reserved appointments of a certan day 
+        capacities = capacity.objects.filter(start__date = start_date)                               # geting all pacacatys of a certan ay 
+        for n in range(len(capacities)):                                                         # going over all capacatys of the day
+            startOfN = capacity.get_start(capacities[n]).time()                         # when does capacaty n start 
+            durationOfN = capacity.get_duration(capacities[n])                           # how long is capacaty n
+            slotsOfN = capacity.get_slots(capacities[n])                                 # how many slots are there in the capacaty
+            
+            endCap = addTime(startOfN, timedelta(minutes=durationOfN))
+            endApp = addTime(start_time, timedelta(minutes=appointmentLength))
+            
+            if (startOfN <= start_time) and \
+                endCap >= endApp and \
+                slotsOfN - len(reserved.filter(start__time = start_time)) and\
+                serializer.is_valid() :
+                    
+                instance = serializer.save()
+                return Response(serializer.data, status = status.HTTP_201_CREATED)
+        error = {'error': 400 , 'message':'du bist ein schlingel'}
+        return Response( data=json.dumps(error) , status = status.HTTP_400_BAD_REQUEST )
+                    
+            
+            
 
     
 
