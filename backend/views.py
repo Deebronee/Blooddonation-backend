@@ -92,10 +92,10 @@ class appointmentCreate(generics.ListCreateAPIView):
         start = parse_datetime(str(request.data.get('start')))
         start_date = start.date()
         start_time = start.time()
-        reserved = appointment.objects.filter(start = start)                               # geting all reserved appointments of a certan day 
-        capacities = capacity.objects.filter(start__date = start_date)                               # geting all pacacatys of a certan ay 
-        for n in range(len(capacities)):                                                         # going over all capacatys of the day
-            startOfN = capacity.get_start(capacities[n]).time()                         # when does capacaty n start 
+        reserved = appointment.objects.filter(start = start)                             # geting all reserved appointments of a certan day 
+        capacities = capacity.objects.filter(start__date = start_date)                   # geting all pacacatys of a certan ay 
+        for n in range(len(capacities)):                                                 # going over all capacatys of the day
+            startOfN = capacity.get_start(capacities[n]).time()                          # when does capacaty n start 
             durationOfN = capacity.get_duration(capacities[n])                           # how long is capacaty n
             slotsOfN = capacity.get_slots(capacities[n])                                 # how many slots are there in the capacaty
             
