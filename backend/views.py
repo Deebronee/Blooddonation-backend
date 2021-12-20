@@ -109,8 +109,8 @@ class appointmentCreate(generics.ListCreateAPIView):
                     
                 instance = serializer.save()
                 return Response(serializer.data, status = status.HTTP_201_CREATED)
-        error = {'error': 400 , 'message':'du bist ein schlingel'}
-        return Response( data=json.dumps(error) , status = status.HTTP_400_BAD_REQUEST )
+        error = {'error': 'HTTP_400_BAD_REQUEST' , 'message':'du bist ein schlingel'}
+        return Response(data=json.loads(json.dumps(error)) , status = status.HTTP_400_BAD_REQUEST )
                     
             
             
