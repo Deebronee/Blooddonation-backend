@@ -34,32 +34,35 @@ class freeAppointmentsView(APIView):
 
     def get(self, request, format=None):
         free_List = []         
-        # appointment length should be exchangeable Verwaltungsoberfläche                                                          
-        appointmentLength = int(60)                                             # in minuten                     
-        # access date via request                                                         # one slot is one hour, in minutes
-        date_str = parse_date(str(request.GET.get('date')))
-        reserved = appointment.objects.filter(start__date = date_str)                               # geting all reserved appointments of a certan day 
-        capacities = capacity.objects.filter(start__date = date_str)                                      # geting all pacacatys of a certan ay 
-        for n in range(len(capacities)):                                                         # going over all capacatys of the day
-            startOfN = capacity.get_start(capacities[n]).time()
-                          # when does capacaty n start 
-            durationOfN = capacity.get_duration(capacities[n])                           # how long is capacaty n
-            slotsOfN = capacity.get_slots(capacities[n])                                  # how many slots are there in the capacaty
-            for i in range(1380 // appointmentLength) :                                         # a day has 1440 minutes 
+#                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
+        appointmentLength = int(60)                                                       # in minutes                     
+#                                                                                           one slot is one hour, in minutes
+        date_str = parse_date(str(request.GET.get('date')))                               # access date via request 
+        reserved = appointment.objects.filter(start__date = date_str)                     # getting all reserved appointments of a certain day 
+        capacities = capacity.objects.filter(start__date = date_str)                      # getting all capacities of a certain day 
+        
+        for element in capacities:                                                        # going over all capacities of the day
+            startOfN = capacity.get_start(element).time()
+            durationOfN = capacity.get_duration(element)                                  # how long is the capacity
+            slotsOfN = capacity.get_slots(element)                                        # how many slots are in the capacity
+            
+            for i in range(1380 // appointmentLength) :                                   # for-loop iterates through all possible appointments of a day
                 j = i*appointmentLength
-                time_j = time(math.floor(j/60),j%60,00)                                          # devide i by the appointmentlength to get the right slot of the day 
-                #if startOfN_datetime <= time_j and (startOfN_datetime + timedelta(minutes=durationOfN)) <= (time_j + timedelta(minutes=appointmentLength)) :  # checking if the time of the day is after the start of the timeslot and bevor the end of the timeslot - one timesolt
+                time_j = time(math.floor(j/60),j%60,00)
                 endCap = addTime(startOfN, timedelta(minutes=durationOfN))
                 endApp = addTime(time_j, timedelta(minutes=appointmentLength))
+
                 if startOfN <= time_j and (endCap >= endApp):
-                    for k in range((slotsOfN - len(reserved.filter(start__time=time_j)))):    
-                        
+
+                    availableAppointments = slotsOfN - len(reserved.filter(start__time=time_j))
+
+                    for _ in range(availableAppointments):    
                         dt = datetime.combine(date_str, time_j)
                         data = {}
                         data['start'] = dt
                         data['duration'] = appointmentLength
                         
-                        free_List.append(data)                                           # of the ammount of reserved slots is lower then the ammount of overall slots than 
+                        free_List.append(data)                                            # f the amount of reserved slots is lower than the amount of overall slots then 
 
         return Response(free_List) 
 
@@ -86,25 +89,26 @@ class appointmentCreate(generics.ListCreateAPIView):
     
     def post(self, request, format=None):
         serializer = appointmentSerializer(data = request.data)
-        # appointment length should be exchangeable Verwaltungsoberfläche                                                          
-        appointmentLength = int(60)                                             # in minuten                     
-        # access date via request                                                         # one slot is one hour, in minutes
-        start = parse_datetime(str(request.data.get('start')))
+#                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
+        appointmentLength = int(60)                                                       # in minutes                   
+#                                                                                           one slot is one hour, in minutes
+        start = parse_datetime(str(request.data.get('start')))                            # access date via request 
         start_date = start.date()
         start_time = start.time()
-        reserved = appointment.objects.filter(start = start)                             # geting all reserved appointments of a certan day 
-        capacities = capacity.objects.filter(start__date = start_date)                   # geting all pacacatys of a certan ay 
-        for n in range(len(capacities)):                                                 # going over all capacatys of the day
-            startOfN = capacity.get_start(capacities[n]).time()                          # when does capacaty n start 
-            durationOfN = capacity.get_duration(capacities[n])                           # how long is capacaty n
-            slotsOfN = capacity.get_slots(capacities[n])                                 # how many slots are there in the capacaty
-            
+        reserved = appointment.objects.filter(start = start)                              # geting all reserved appointments of a certain day 
+        capacities = capacity.objects.filter(start__date = start_date)                    # geting all capacities of a certain day 
+
+        for element in capacities:                                                        # going over all capacities of the day
+            startOfN = capacity.get_start(element).time()                                 # when does the capacity start 
+            durationOfN = capacity.get_duration(element)                                  # how long is the capacity
+            slotsOfN = capacity.get_slots(element)                                        # how many slots are there in the capacity
+
             endCap = addTime(startOfN, timedelta(minutes=durationOfN))
             endApp = addTime(start_time, timedelta(minutes=appointmentLength))
             
             if (startOfN <= start_time) and \
                 endCap >= endApp and \
-                slotsOfN - len(reserved.filter(start__time = start_time)) and\
+                slotsOfN > len(reserved.filter(start__time = start_time)) and\
                 serializer.is_valid() :
                     
                 instance = serializer.save()
