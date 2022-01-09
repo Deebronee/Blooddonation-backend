@@ -51,10 +51,12 @@ class appointmentSerializer(serializers.ModelSerializer):
         person_data = validated_data.pop('person')
         newPerson = person.objects.create(**person_data)
 
-        request_data = validated_data.pop('request')
-        newRequest = request.objects.create(**request_data)
+        #request_data = validated_data.pop('request')
+        newRequest = request.objects.create(created = datetime.now(), status = "pending")
+        #newRequest.created = datetime.now()
+        #newRequest.status = "pending"
 
-        newAppointment = appointment.objects.create(person = newPerson, request = newRequest, **validated_data)
+        newAppointment = appointment.objects.create(person = newPerson, request = newRequest, **person_data)
 
         return newAppointment
 
