@@ -134,10 +134,12 @@ class faqQuestionsList(generics.ListCreateAPIView):
 '''def index(request):
     return render(request, 'backend/index.html')'''
 
+'''
 # creates ,update ,deleate ,patch
 class appointmentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = appointment.objects.all()
     serializer_class = appointmentSerializer
+'''
 
 
 # creates get and post 

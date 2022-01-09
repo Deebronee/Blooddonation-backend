@@ -17,7 +17,7 @@ from backend.models.capacity import capacity
 
 
 # Get list of appointments, patch appointments, create appointments via JSON
-class appointmentsConsumer(GenericAsyncAPIConsumer, ListModelMixin, PatchModelMixin, CreateModelMixin):
+class appointmentsConsumer(GenericAsyncAPIConsumer, ListModelMixin, UpdateModelMixin, CreateModelMixin, DeleteModelMixin, PatchModelMixin):
     queryset = appointment.objects.all()
     serializer_class = appointmentSerializer
 
@@ -34,7 +34,7 @@ class appointmentsConsumer(GenericAsyncAPIConsumer, ListModelMixin, PatchModelMi
         await self.appointments_activity.subscribe()
 
 
-
+'''
 # Request Notifications
 class requestsConsumer(GenericAsyncAPIConsumer):
     queryset = request.objects.all()
@@ -51,9 +51,9 @@ class requestsConsumer(GenericAsyncAPIConsumer):
     @action()
     async def subscribe_to_request_activity(self, **kwargs):
         await self.request_activity.subscribe()
+'''
 
 
-
-class capacityConsumer(GenericAsyncAPIConsumer, CreateModelMixin, DeleteModelMixin, PatchModelMixin):
+class capacityConsumer(GenericAsyncAPIConsumer, CreateModelMixin, DeleteModelMixin, UpdateModelMixin):
     queryset = capacity.objects.all()
     serializer_class = capacitySerializer

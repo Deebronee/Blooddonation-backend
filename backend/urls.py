@@ -17,7 +17,7 @@ urlpatterns =[
     path('appointments', views.freeAppointmentsView.as_view()),
     path('appointment_status', views.appointmentStatusView.as_view()),
     path('appointment', views.appointmentCreate.as_view()),
-    path('appointment/<int:pk>', views.appointmentDetail.as_view()),
+    #path('appointment/<int:pk>', views.appointmentDetail.as_view()),
 
     path('donationquestions', views.donationQuestionList.as_view()),
     path('faqquestions', views.faqQuestionsList.as_view()),
