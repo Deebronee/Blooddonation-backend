@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework import fields, serializers, viewsets
 from backend.models.appointment import appointment
 from backend.models.donationQuestion import donationQuestion
@@ -32,8 +33,8 @@ class requestSerializer(serializers.ModelSerializer):
 
 
 class appointmentSerializer(serializers.ModelSerializer):
-    request = requestSerializer(partial = True)
-    person = personSerializer()
+    request = requestSerializer()
+    person = personSerializer(required = False)
 
     class Meta:
         model = appointment
@@ -49,8 +50,12 @@ class appointmentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         person_data = validated_data.pop('person')
         newPerson = person.objects.create(**person_data)
-        newAppointment = appointment.objects.create(person = newPerson, **validated_data)
-        
+
+        request_data = validated_data.pop('request')
+        newRequest = request.objects.create(**request_data)
+
+        newAppointment = appointment.objects.create(person = newPerson, request = newRequest, **validated_data)
+
         return newAppointment
 
 

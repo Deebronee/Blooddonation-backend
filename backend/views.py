@@ -106,13 +106,13 @@ class appointmentCreate(generics.ListCreateAPIView):
             endCap = addTime(startOfN, timedelta(minutes=durationOfN))
             endApp = addTime(start_time, timedelta(minutes=appointmentLength))
             
+            x = serializer.is_valid()
             if (startOfN <= start_time) and \
                 endCap >= endApp and \
                 slotsOfN > len(reserved.filter(start__time = start_time)) and\
-                serializer.is_valid() :
-                    
-                instance = serializer.save()
+                x :
                 return Response(serializer.data, status = status.HTTP_201_CREATED)
+        print(serializer.errors)
         error = {'error': 'HTTP_400_BAD_REQUEST' , 'message':'du bist ein schlingel'}
         return Response(data=json.loads(json.dumps(error)) , status = status.HTTP_400_BAD_REQUEST )
                     

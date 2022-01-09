@@ -1,6 +1,6 @@
 from django.db import models
 from backend.models.person import person
-from backend.models.request import request
+from backend.models.request import request as r
 from datetime import datetime
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -13,7 +13,7 @@ class appointment(models.Model):
     #duration = models.DurationField()
     duration = models.IntegerField()
     person = models.ForeignKey(person, on_delete=models.CASCADE, blank = True, null = True)
-    request = models.ForeignKey(request, on_delete=models.CASCADE, blank = True, null = True)
+    request = models.ForeignKey(r, on_delete=models.CASCADE, blank = True, null = True)
 
     def get_id(self):
         return self.id
@@ -29,7 +29,7 @@ class appointment(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:  # create
-            self.request = request.objects.create(created = datetime.now(), status = "pending")
+            self.request = r.objects.create(created = datetime.now(), status = "pending")
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
     #def post(self, request, format = json)
