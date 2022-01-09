@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models.lookups import StartsWith
 
 
-class capacity(models.Model):
+class Capacity(models.Model):
     start = models.DateTimeField()
     duration = models.IntegerField()
     slots = models.IntegerField()

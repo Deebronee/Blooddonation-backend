@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class donationQuestion(models.Model):
+class DonationQuestion(models.Model):
     body = models.TextField()
     isYesCorrect = models.BooleanField()
 

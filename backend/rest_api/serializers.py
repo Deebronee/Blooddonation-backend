@@ -1,18 +1,18 @@
 from datetime import datetime
 from rest_framework import fields, serializers, viewsets
-from backend.models.appointment import appointment
-from backend.models.donationQuestion import donationQuestion
-from backend.models.person import person
-from backend.models.request import request
-from backend.models.capacity import capacity
-from backend.models.faqQuestion import faqQuestion
+from backend.models.appointment import Appointment
+from backend.models.donationQuestion import DonationQuestion
+from backend.models.person import Person
+from backend.models.request import Request
+from backend.models.capacity import Capacity
+from backend.models.faqQuestion import FaqQuestion
 
 
 
-class personSerializer(serializers.ModelSerializer):
+class PersonSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = person
+        model = Person
         fields = [
             'id',
             'name',
@@ -21,10 +21,10 @@ class personSerializer(serializers.ModelSerializer):
         ]
 
 
-class requestSerializer(serializers.ModelSerializer):
+class RequestSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = request
+        model = Request
         fields = [
             'id',
             'created',
@@ -32,12 +32,12 @@ class requestSerializer(serializers.ModelSerializer):
         ]
 
 
-class appointmentSerializer(serializers.ModelSerializer):
-    request = requestSerializer()
-    person = personSerializer(required = False)
+class AppointmentSerializer(serializers.ModelSerializer):
+    request = RequestSerializer(required = False)
+    person = PersonSerializer(required = False)
 
     class Meta:
-        model = appointment
+        model = Appointment
         fields = [
             'id',
             'start',
@@ -46,17 +46,17 @@ class appointmentSerializer(serializers.ModelSerializer):
             'request',
         ]
 
-    
+   
+    # TODO creating an appointment object should automatically create a request object 
     def create(self, validated_data):
         person_data = validated_data.pop('person')
-        newPerson = person.objects.create(**person_data)
+        newPerson = Person.objects.create(**person_data)
 
         #request_data = validated_data.pop('request')
-        newRequest = request.objects.create(created = datetime.now(), status = "pending")
+        newRequest = Request.objects.create(created = datetime.now(), status = "pending")
         #newRequest.created = datetime.now()
         #newRequest.status = "pending"
-
-        newAppointment = appointment.objects.create(person = newPerson, request = newRequest, **person_data)
+        newAppointment = Appointment.objects.create(person = newPerson, request = newRequest, **validated_data)
 
         return newAppointment
 
@@ -77,14 +77,11 @@ class appointmentSerializer(serializers.ModelSerializer):
     
     
     
-
-
-
-class requestIDSerializer(serializers.ModelSerializer):
-    request = requestSerializer(read_only=True)
+class RequestIDSerializer(serializers.ModelSerializer):
+    request = RequestSerializer(read_only=True)
 
     class Meta:
-        model = appointment
+        model = Appointment
         fields = [
             'id',
             'request',
@@ -92,10 +89,10 @@ class requestIDSerializer(serializers.ModelSerializer):
        
 
 
-class capacitySerializer(serializers.ModelSerializer):
+class CapacitySerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = capacity
+        model = Capacity
         fields = [
             'id',
             'start',
@@ -104,9 +101,10 @@ class capacitySerializer(serializers.ModelSerializer):
         ]
 
         
-class donationQuestionSerializer(serializers.ModelSerializer):
+class DonationQuestionSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = donationQuestion
+        model = DonationQuestion
         fields = [
             'id'
             'titel',
@@ -114,9 +112,10 @@ class donationQuestionSerializer(serializers.ModelSerializer):
             'expected_answer',
         ]
 
-class faqQuestionSerializer(serializers.ModelSerializer):
+class FaqQuestionSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = faqQuestion
+        model = FaqQuestion
         fields =[ 
         'head'
         'body' 

@@ -4,13 +4,13 @@ from django.http import HttpResponse, response
 from rest_framework import generics, serializers, viewsets
 from rest_framework.views import APIView
 #from rest_framework.decorators import Response
-from backend.api.serializers import faqQuestionSerializer ,appointmentSerializer, donationQuestionSerializer, requestIDSerializer, requestSerializer, personSerializer, capacitySerializer
-from .models.appointment import appointment
-from .models.donationQuestion import donationQuestion
-from .models.request import request
-from .models.person import person
-from .models.capacity import capacity
-from .models.faqQuestion import faqQuestion
+from backend.rest_api.serializers import FaqQuestionSerializer ,AppointmentSerializer, DonationQuestionSerializer, RequestIDSerializer, RequestSerializer, PersonSerializer, CapacitySerializer
+from .models.appointment import Appointment
+from .models.donationQuestion import DonationQuestion
+from .models.request import Request
+from .models.person import Person
+from .models.capacity import Capacity
+from .models.faqQuestion import FaqQuestion
 from rest_framework.response import Response
 import json
 from datetime import time, timedelta, datetime, date
@@ -38,13 +38,13 @@ class freeAppointmentsView(APIView):
         appointmentLength = int(60)                                                       # in minutes                     
 #                                                                                           one slot is one hour, in minutes
         date_str = parse_date(str(request.GET.get('date')))                               # access date via request 
-        reserved = appointment.objects.filter(start__date = date_str)                     # getting all reserved appointments of a certain day 
-        capacities = capacity.objects.filter(start__date = date_str)                      # getting all capacities of a certain day 
+        reserved = Appointment.objects.filter(start__date = date_str)                     # getting all reserved appointments of a certain day 
+        capacities = Capacity.objects.filter(start__date = date_str)                      # getting all capacities of a certain day 
         
         for element in capacities:                                                        # going over all capacities of the day
-            startOfN = capacity.get_start(element).time()
-            durationOfN = capacity.get_duration(element)                                  # how long is the capacity
-            slotsOfN = capacity.get_slots(element)                                        # how many slots are in the capacity
+            startOfN = Capacity.get_start(element).time()
+            durationOfN = Capacity.get_duration(element)                                  # how long is the capacity
+            slotsOfN = Capacity.get_slots(element)                                        # how many slots are in the capacity
             
             for i in range(1380 // appointmentLength) :                                   # for-loop iterates through all possible appointments of a day
                 j = i*appointmentLength
@@ -67,20 +67,20 @@ class freeAppointmentsView(APIView):
         return Response(free_List) 
 
 class appointmentStatusView(generics.ListCreateAPIView):
-    serializer_class = requestIDSerializer
+    serializer_class = RequestIDSerializer
 
     def get_queryset(self):
         id = self.request.query_params.get('id')
-        queryset = appointment.objects.filter(id=id)
+        queryset = Appointment.objects.filter(id=id)
             
         return queryset
 
 
 class appointmentCreate(generics.ListCreateAPIView): 
-    serializer_class = appointmentSerializer
+    serializer_class = AppointmentSerializer
 
     def get_queryset(self):
-        queryset = appointment.objects.all()
+        queryset = Appointment.objects.all()
         id = self.request.query_params.get('id')
         if id is not None:
             queryset = queryset.filter(id=id)
@@ -88,20 +88,20 @@ class appointmentCreate(generics.ListCreateAPIView):
         return queryset
     
     def post(self, request, format=None):
-        serializer = appointmentSerializer(data = request.data)
+        serializer = AppointmentSerializer(data = request.data)
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
         appointmentLength = int(60)                                                       # in minutes                   
 #                                                                                           one slot is one hour, in minutes
         start = parse_datetime(str(request.data.get('start')))                            # access date via request 
         start_date = start.date()
         start_time = start.time()
-        reserved = appointment.objects.filter(start = start)                              # geting all reserved appointments of a certain day 
-        capacities = capacity.objects.filter(start__date = start_date)                    # geting all capacities of a certain day 
+        reserved = Appointment.objects.filter(start = start)                              # geting all reserved appointments of a certain day 
+        capacities = Capacity.objects.filter(start__date = start_date)                    # geting all capacities of a certain day 
 
         for element in capacities:                                                        # going over all capacities of the day
-            startOfN = capacity.get_start(element).time()                                 # when does the capacity start 
-            durationOfN = capacity.get_duration(element)                                  # how long is the capacity
-            slotsOfN = capacity.get_slots(element)                                        # how many slots are there in the capacity
+            startOfN = Capacity.get_start(element).time()                                 # when does the capacity start 
+            durationOfN = Capacity.get_duration(element)                                  # how long is the capacity
+            slotsOfN = Capacity.get_slots(element)                                        # how many slots are there in the capacity
 
             endCap = addTime(startOfN, timedelta(minutes=durationOfN))
             endApp = addTime(start_time, timedelta(minutes=appointmentLength))
@@ -124,12 +124,12 @@ class appointmentCreate(generics.ListCreateAPIView):
 
 
 class donationQuestionList(generics.ListCreateAPIView):
-    queryset = donationQuestion.objects.all()
-    serializer_class = donationQuestionSerializer
+    queryset = DonationQuestion.objects.all()
+    serializer_class = DonationQuestionSerializer
 
 class faqQuestionsList(generics.ListCreateAPIView):
-    queryset = faqQuestion.objects.all()
-    serializer_class = faqQuestionSerializer
+    queryset = FaqQuestion.objects.all()
+    serializer_class = FaqQuestionSerializer
 
 '''def index(request):
     return render(request, 'backend/index.html')'''
@@ -144,32 +144,32 @@ class appointmentDetail(generics.RetrieveUpdateDestroyAPIView):
 
 # creates get and post 
 class requestList(generics.ListCreateAPIView):
-    queryset = request.objects.all()
-    serializer_class = requestSerializer
+    queryset = Request.objects.all()
+    serializer_class = RequestSerializer
 
 # creates ,update ,deleate ,patch
 class requestDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = appointment.objects.all()
-    serializer_class = requestSerializer 
+    queryset = Request.objects.all()
+    serializer_class = RequestSerializer 
 
 
 # creates get and post 
 class personList(generics.ListCreateAPIView):
-    queryset = person.objects.all()
-    serializer_class = personSerializer
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
 
 # creates ,update ,deleate ,patch
 class personDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = person.objects.all()
-    serializer_class = personSerializer 
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer 
 
 
 # creates get and post 
 class capacityList(generics.ListCreateAPIView):
-    queryset = capacity.objects.all()
-    serializer_class = capacitySerializer
+    queryset = Capacity.objects.all()
+    serializer_class = CapacitySerializer
 
 # creates ,update ,deleate ,patch
 class capacityDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = capacity.objects.all()
-    serializer_class = capacitySerializer
+    queryset = Capacity.objects.all()
+    serializer_class = CapacitySerializer
