@@ -9,15 +9,23 @@ from djangochannelsrestframework.mixins import (
     DeleteModelMixin,
 )
 
+from typing import Any, Tuple, Dict, Optional, OrderedDict, Union
+from .customMixins.getAllCapacitiesMixin import GetAllCapacitiesMixin
+from .customMixins.getAllAppointmentsMixin import GetAllAppointmentsMixin
+
+
+from rest_framework import status
 
 from backend.api.serializers import appointmentSerializer, requestSerializer, capacitySerializer
 from backend.models.appointment import appointment
 from backend.models.request import request
 from backend.models.capacity import capacity
+from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
+
 
 
 # Get list of appointments, patch appointments, create appointments via JSON
-class appointmentsConsumer(GenericAsyncAPIConsumer, ListModelMixin, UpdateModelMixin, CreateModelMixin, DeleteModelMixin, PatchModelMixin):
+class appointmentsConsumer(GenericAsyncAPIConsumer, ListModelMixin, UpdateModelMixin, CreateModelMixin, DeleteModelMixin, PatchModelMixin, GetAllCapacitiesMixin, GetAllAppointmentsMixin):
     queryset = appointment.objects.all()
     serializer_class = appointmentSerializer
 
@@ -54,6 +62,8 @@ class requestsConsumer(GenericAsyncAPIConsumer):
 '''
 
 
-class capacityConsumer(GenericAsyncAPIConsumer, CreateModelMixin, DeleteModelMixin, UpdateModelMixin):
+class capacityConsumer(GenericAsyncAPIConsumer, CreateModelMixin, DeleteModelMixin, UpdateModelMixin, GetAllCapacitiesMixin):
     queryset = capacity.objects.all()
     serializer_class = capacitySerializer
+
+   
