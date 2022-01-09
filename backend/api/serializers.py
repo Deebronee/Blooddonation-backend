@@ -32,7 +32,7 @@ class requestSerializer(serializers.ModelSerializer):
 
 
 class appointmentSerializer(serializers.ModelSerializer):
-    request = requestSerializer(read_only=True)
+    request = requestSerializer(partial = True)
     person = personSerializer()
 
     class Meta:
@@ -52,6 +52,23 @@ class appointmentSerializer(serializers.ModelSerializer):
         newAppointment = appointment.objects.create(person = newPerson, **validated_data)
         
         return newAppointment
+
+
+    def update(self, instance, validated_data):
+        request_data = validated_data.pop('request')
+        newRequest = instance.request
+
+        instance.start = validated_data.get('start', instance.start)
+        instance.duration = validated_data.get('duration', instance.duration)
+        instance.save()
+
+        newRequest.created = request_data.get('created', newRequest.created)
+        newRequest.status = request_data.get('status', newRequest.status)
+        newRequest.save()
+
+        return instance
+    
+    
     
 
 
