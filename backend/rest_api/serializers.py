@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing_extensions import Required
 from rest_framework import fields, serializers, viewsets
 from backend.models.appointment import Appointment
 from backend.models.donationQuestion import DonationQuestion
@@ -33,8 +34,8 @@ class RequestSerializer(serializers.ModelSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    request = RequestSerializer(required = False)
-    person = PersonSerializer(required = False)
+    request = RequestSerializer(required=True)
+    person = PersonSerializer(required=True)
 
     class Meta:
         model = Appointment
@@ -46,18 +47,15 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'request',
         ]
 
-   
     # TODO creating an appointment object should automatically create a request object 
     def create(self, validated_data):
+        request_data = validated_data.pop('request')
         person_data = validated_data.pop('person')
-        newPerson = Person.objects.create(**person_data)
-
-        #request_data = validated_data.pop('request')
-        newRequest = Request.objects.create(created = datetime.now(), status = "pending")
-        #newRequest.created = datetime.now()
-        #newRequest.status = "pending"
-        newAppointment = Appointment.objects.create(person = newPerson, request = newRequest, **validated_data)
-
+        
+        newRequest = Request.objects.create(**request_data)
+        newPerson = Person.objects.get_or_create(**person_data)[0]
+        newAppointment = Appointment.objects.create(request=newRequest, person=newPerson, **validated_data)
+        
         return newAppointment
 
 
