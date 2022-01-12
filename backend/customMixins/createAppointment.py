@@ -45,29 +45,20 @@ class CreateAppointmentMixin:
 		    }
         }
         '''
+        dic = {'created': datetime.now(), 'status': 'pending'}
         
-        '''
+        #data.__setitem__('request.created', datetime.now())
+        #data.__setitem__('request.status', 'pending')
+        data['request'] = dic
+        #print(data)
         serializer = AppointmentSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer, **kwargs)
-        return serializer.data, status.HTTP_201_CREATED
-        '''
-        print(data)
-        print(type(data))
-        real_data = data.copy()
-
-
-
-        #print(real_data)
-        real_data.__setitem__('request.created', datetime.now())
-        real_data.__setitem__('request.status', 'pending')
-        print(real_data)
-        serializer = AppointmentSerializer(data=real_data)
-        print(serializer)
+        #serializer.is_valid(raise_exception=True)
+        #self.perform_create(serializer, **kwargs)
+        #return serializer.data, status.HTTP_201_CREATED
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
         appointmentLength = int(60)                                                       # in minutes                   
 #                                                                                           one slot is one hour, in minutes
-        start = parse_datetime(str(real_data['start']))                            # access date via request 
+        start = parse_datetime(str(data['start']))                            # access date via request 
         start_date = start.date()
         start_time = start.time()
         reserved = Appointment.objects.filter(start = start)                              # geting all reserved appointments of a certain day 
@@ -81,21 +72,43 @@ class CreateAppointmentMixin:
             endCap = addTime(startOfN, timedelta(minutes=durationOfN))
             endApp = addTime(start_time, timedelta(minutes=appointmentLength))
             
-            x = serializer.is_valid()
+            serializer.is_valid(raise_exception=True)
 
             if (startOfN <= start_time) and \
                 endCap >= endApp and \
-                slotsOfN > len(reserved.filter(start__time = start_time)) and\
-                x:
+                slotsOfN > len(reserved.filter(start__time = start_time)):
+                serializer.is_valid(raise_exception=True)
                 serializer.save()
                 return serializer.data, status.HTTP_201_CREATED
-
 
         #print(serializer.errors)
         error = {'error': 'HTTP_400_BAD_REQUEST' , 'message':'du bist ein schlingel'}
         return json.loads(json.dumps(error)) , status.HTTP_400_BAD_REQUEST
-        
-    '''
+    
+    
     def perform_create(self, serializer, **kwargs):
         serializer.save()
-    '''
+    
+
+    # TODO patch request via websocket
+    @action()
+    def updateAppointment(self, data: QueryDict, **kwargs) -> Tuple[ReturnDict, int]:
+
+        instance = self.get_object(data=data, **kwargs)
+
+        serializer = AppointmentSerializer(
+            instance=instance, data=data, partial=True
+        )
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_patch(serializer, **kwargs)
+
+        if getattr(instance, "_prefetched_objects_cache", None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return serializer.data, status.HTTP_200_OK
+
+    def perform_patch(self, serializer, **kwargs):
+        serializer.save()
