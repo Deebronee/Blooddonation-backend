@@ -88,11 +88,15 @@ class appointmentCreate(generics.ListCreateAPIView):
         return queryset
     
     def post(self, request):
+        print(request.data)
         data = request.data.copy()
+        print(data)
+        print(type(data))
         data.__setitem__('request.created', datetime.now())
         data.__setitem__('request.status', 'requested')
-        
+        print(data)
         serializer = AppointmentSerializer(data=data)
+        print(serializer)
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
         appointmentLength = int(60)                                                       # in minutes                   
 #                                                                                           one slot is one hour, in minutes

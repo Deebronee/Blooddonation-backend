@@ -1,6 +1,8 @@
 from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
 from djangochannelsrestframework.observer import model_observer
 from djangochannelsrestframework.decorators import action
+
+from backend.customMixins.createAppointment import CreateAppointmentMixin
 from .customMixins.getAllCapacitiesMixin import GetAllCapacitiesMixin
 from .customMixins.getAllAppointmentsMixin import GetAllAppointmentsMixin
 from backend.rest_api.serializers import AppointmentSerializer
@@ -8,7 +10,7 @@ from backend.models.appointment import Appointment
 
 
 # Get list of appointments, patch appointments, create appointments via JSON
-class WebsocketConsumer(GenericAsyncAPIConsumer, GetAllCapacitiesMixin, GetAllAppointmentsMixin):
+class WebsocketConsumer(GenericAsyncAPIConsumer, GetAllCapacitiesMixin, GetAllAppointmentsMixin, CreateAppointmentMixin):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
 
