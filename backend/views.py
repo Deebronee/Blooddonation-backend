@@ -87,8 +87,12 @@ class appointmentCreate(generics.ListCreateAPIView):
             
         return queryset
     
-    def post(self, request, format=None):
-        serializer = AppointmentSerializer(data = request.data)
+    def post(self, request):
+        data = request.data.copy()
+        data.__setitem__('request.created', datetime.now())
+        data.__setitem__('request.status', 'requested')
+        
+        serializer = AppointmentSerializer(data=data)
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
         appointmentLength = int(60)                                                       # in minutes                   
 #                                                                                           one slot is one hour, in minutes
@@ -106,11 +110,11 @@ class appointmentCreate(generics.ListCreateAPIView):
             endCap = addTime(startOfN, timedelta(minutes=durationOfN))
             endApp = addTime(start_time, timedelta(minutes=appointmentLength))
             
-            x = serializer.is_valid()
             if (startOfN <= start_time) and \
                 endCap >= endApp and \
                 slotsOfN > len(reserved.filter(start__time = start_time)) and\
-                x :
+                serializer.is_valid() :
+                serializer.save()
                 return Response(serializer.data, status = status.HTTP_201_CREATED)
         print(serializer.errors)
         error = {'error': 'HTTP_400_BAD_REQUEST' , 'message':'du bist ein schlingel'}
