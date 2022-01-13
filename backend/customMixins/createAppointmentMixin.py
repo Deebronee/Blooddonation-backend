@@ -94,7 +94,7 @@ class CreateAppointmentMixin:
     @action()
     def updateAppointment(self, data: QueryDict, **kwargs) -> Tuple[ReturnDict, int]:
 
-        instance = self.get_object(data=data, **kwargs)
+        instance = Appointment(data=data, **kwargs)
 
         serializer = AppointmentSerializer(
             instance=instance, data=data, partial=True

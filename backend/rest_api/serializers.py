@@ -19,6 +19,8 @@ class PersonSerializer(serializers.ModelSerializer):
             'name',
             'birthday',
             'gender',
+            'firstDonation',
+            'telephoneNumber'
         ]
 
 
