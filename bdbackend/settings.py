@@ -21,13 +21,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^hk5=zar%kqnah79ug#z)u1&!@y=ipv($b*-23p!e94eb%y70d'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+# Self: Security
+# security.W016
+CSRF_COOKIE_SECURE = False
+# security.W012
+SESSION_COOKIE_SECURE = False
+# security.W004
+#SECURE_HSTS_SECONDS = 31536000 # One year in seconds
 
 # Application definition
 # if a new app is created add it to this list
@@ -87,21 +94,14 @@ CHANNEL_LAYERS = {
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql', 
-#        'NAME': os.environ.get('DB_NAME'),
-#        'USER': os.environ.get('DB_USER'),
-#        'PASSWORD': os.environ.get('DB_PASSWORD'),
-#        'HOST': 'db',   # Or an IP Address that your DB is hosted on
-#        'PORT': '3306',
-#    }
-#}
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
