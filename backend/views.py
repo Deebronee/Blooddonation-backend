@@ -88,13 +88,9 @@ class appointmentCreate(generics.ListCreateAPIView):
         return queryset
     
     def post(self, request):
-        print(request.data)
         data = request.data.copy()
-        print(data)
-        print(type(data))
         data.__setitem__('request.created', datetime.now())
         data.__setitem__('request.status', 'requested')
-        print(data)
         serializer = AppointmentSerializer(data=data)
       
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
@@ -117,8 +113,7 @@ class appointmentCreate(generics.ListCreateAPIView):
             if (startOfN <= start_time) and \
                 endCap >= endApp and \
                 slotsOfN > len(reserved.filter(start__time = start_time)) and\
-                serializer.is_valid() :
-                print(serializer.validated_data)
+                serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status = status.HTTP_201_CREATED)
         

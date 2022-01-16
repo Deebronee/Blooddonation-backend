@@ -37,11 +37,11 @@ class CreateAppointmentMixin:
         		        "start": "2022-01-11T12:00:00Z",
         		        "duration": 60,
         		        "person": 
-			    {
-           			    "name": "Websocket Tester",
-            			"birthday": null,
-            			"gender": ""
-        		}
+			                {
+           			            "name": "Websocket Tester",
+            			        "birthday": null,
+            			        "gender": ""
+        		            }
 		    }
         }
         '''
@@ -90,25 +90,41 @@ class CreateAppointmentMixin:
         serializer.save()
     
 
+
+
+        
+
+
     # TODO patch request via websocket
     @action()
     def updateAppointment(self, data: QueryDict, **kwargs) -> Tuple[ReturnDict, int]:
 
-        instance = Appointment(data=data, **kwargs)
+        '''
+        sample JSON to update appointment
 
+        {
+	        "action" : "updateAppointment",
+            "request_id" : 123,
+            "pk" : 1,
+	        "data" : 
+		        {
+        		    "request" : 
+                        {
+                            "created" : "2024-01-01T00:00:00",
+                            "status" : "confirmed"
+                        }
+		        }
+        }
+        '''
+
+        instance = Appointment.objects.get(pk= kwargs['pk'])
         serializer = AppointmentSerializer(
             instance=instance, data=data, partial=True
         )
-
         serializer.is_valid(raise_exception=True)
-        self.perform_patch(serializer, **kwargs)
-
-        if getattr(instance, "_prefetched_objects_cache", None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
+        serializer.save()
 
         return serializer.data, status.HTTP_200_OK
 
-    def perform_patch(self, serializer, **kwargs):
-        serializer.save()
+
+    

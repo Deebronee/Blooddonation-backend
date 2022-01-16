@@ -112,6 +112,7 @@ class DonationQuestionSerializer(serializers.ModelSerializer):
             'expected_answer',
         ]
 
+
 class FaqQuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
