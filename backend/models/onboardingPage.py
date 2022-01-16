@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class onboardingPage(models.Model):
+class OnboardingPage(models.Model):
     position = models.IntegerField()
     head = models.CharField(max_length=250, blank=False)
     body = models.TextField(max_length=250, blank=False)
