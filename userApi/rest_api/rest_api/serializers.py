@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing_extensions import Required
 from rest_framework import fields, serializers, viewsets
 from rest_api.models.appointment import Appointment
 from rest_api.models.donationQuestion import DonationQuestion
