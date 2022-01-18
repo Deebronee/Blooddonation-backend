@@ -25,7 +25,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - SECRET_KEY=fZFaOrfMFwAfK9KkpjKAgKYRCtxTPBB7tqlYxh8ks7gw8wGAHw4qfmUy3SDZt2D5ggh6irRwfXFdO7lPI5zOZ5lIqNIue3UFmhRUGddYPTCmLv8ild7VdlPAcegEHcnRYwqMtbVE2pSehBKLuGwEh8Mgzh1CJGORhov25CjB1pyYj0gSYDWJXPmqGvWja2KZc2iFaViF4kqtzPAt0R5N1XDidQOCtMNMVib1ZpK7NLnxm7O6syKad5rCwsKV1o8SaQgNlA04Qjnr7kYwChGkB7vUSBuuZWg3o2j4PrfZFHheexUPfvtDTGovU5lrQ8kK
-      - ALLOW_API_ACCESS=pgAsiSKXwysRvg6ZnftqkLrVjdUlgvj7rBXPKemt8tT3RAPh6lbJM40hvAba
+      - API_KEY=pgAsiSKXwysRvg6ZnftqkLrVjdUlgvj7rBXPKemt8tT3RAPh6lbJM40hvAba
     depends_on:
       - db
       - redis
