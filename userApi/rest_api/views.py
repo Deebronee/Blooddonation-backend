@@ -4,7 +4,7 @@ from django.http import HttpResponse, response
 from rest_framework import generics, serializers, viewsets
 from rest_framework.views import APIView
 #from rest_framework.decorators import Response
-from rest_api.rest_api.serializers import FaqQuestionSerializer ,AppointmentSerializer, DonationQuestionSerializer, RequestIDSerializer, RequestSerializer, PersonSerializer, CapacitySerializer
+from rest_api.rest_api.serializers import FaqQuestionSerializer ,AppointmentSerializer, DonationQuestionSerializer, RequestIDSerializer, RequestSerializer, PersonSerializer, CapacitySerializer, DonationQuestionTranslationSerializer
 from .models.appointment import Appointment
 from .models.donationQuestion import DonationQuestion
 from .models.request import Request
@@ -127,13 +127,7 @@ class appointmentCreate(generics.ListCreateAPIView):
 
 
 
-class donationQuestionList(generics.ListCreateAPIView):
-    queryset = DonationQuestion.objects.all()
-    serializer_class = DonationQuestionSerializer
 
-class faqQuestionsList(generics.ListCreateAPIView):
-    queryset = FaqQuestion.objects.all()
-    serializer_class = FaqQuestionSerializer
 
 '''def index(request):
     return render(request, 'backend/index.html')'''
@@ -177,3 +171,5 @@ class capacityList(generics.ListCreateAPIView):
 class capacityDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Capacity.objects.all()
     serializer_class = CapacitySerializer
+
+
