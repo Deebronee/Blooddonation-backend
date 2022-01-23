@@ -6,6 +6,10 @@ from rest_api.models.person import Person
 from rest_api.models.request import Request
 from rest_api.models.capacity import Capacity
 from rest_api.models.faqQuestion import FaqQuestion
+from rest_api.models.donationQuestionTranslation import DonationQuestionTranslation
+from rest_api.models.faqQuestionTranslation import FaqQuestionTranslation
+from rest_api.models.adminSettings import AdminSettings
+from rest_api.models.statistic import Statistic
 
 
 
@@ -105,19 +109,114 @@ class DonationQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DonationQuestion
         fields = [
-            'id'
-            'titel',
-            'question' ,
-            'expected_answer',
+            'id',
+            'position',
+            'isYesCorrect',
         ]
 
+class DonationQuestionTranslationSerializer(serializers.ModelSerializer):
+    donationQuestion = DonationQuestionSerializer(required = True)
+
+    class Meta:
+        model = DonationQuestionTranslation
+        fields =[ 
+        'id', 
+        'head',
+        'body',
+        'language',
+        'donationQuestion',
+        ] 
+        
+    def create(self, validated_data):
+        donationQuestion_data = validated_data.pop('donationQuestion')
+        
+        newDonationQuestion = DonationQuestion.objects.create(**donationQuestion_data)
+        newDonationQuestionTranslation = DonationQuestionTranslation.objects.create(donationQuestion=newDonationQuestion, **validated_data)
+        
+        return newDonationQuestionTranslation
+
+    def update(self, instance, validated_data):
+        donationQuestion_data = validated_data.pop('donationQuestion')
+        newDonationQuestion = instance.donationQuestion
+
+        instance.head = validated_data.get('head', instance.head)
+        instance.body = validated_data.get('body', instance.body)
+        instance.language = validated_data.get('language', instance.language)
+        instance.save()
+
+        newDonationQuestion.position = donationQuestion_data.get('position', newDonationQuestion.position)
+        newDonationQuestion.isYesCorrect = donationQuestion_data.get('isYesCorrect', newDonationQuestion.isYesCorrect)
+        newDonationQuestion.save()
+
+        return instance
 
 class FaqQuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FaqQuestion
         fields =[ 
-        'head'
-        'body' 
+        'id', 
+        'position',
         ] 
 
+class FaqQuestionTranslationSerializer(serializers.ModelSerializer):
+    faqQuestion = FaqQuestionSerializer(required = True)
+
+    class Meta:
+        model = FaqQuestionTranslation
+        fields =[ 
+        'id', 
+        'head',
+        'body',
+        'language',
+        'faqQuestion',
+        ] 
+
+    def create(self, validated_data):
+        faqQuestion_data = validated_data.pop('faqQuestion')
+        newFaqQuestion = FaqQuestion.objects.create(**faqQuestion_data)
+        newFaqQuestionTranslation = FaqQuestionTranslation.objects.create(faqQuestion=newFaqQuestion, **validated_data)
+        return newFaqQuestionTranslation
+
+
+    def update(self, instance, validated_data):
+        faqQuestion_data = validated_data.pop('faqQuestion')
+        newFaqQuestion = instance.faqQuestion
+
+        instance.head = validated_data.get('head', instance.head)
+        instance.body = validated_data.get('body', instance.body)
+        instance.language = validated_data.get('language', instance.language)
+        instance.save()
+
+        newFaqQuestion.position = faqQuestion_data.get('position', newFaqQuestion.position)
+        newFaqQuestion.save()
+
+        return instance
+
+class AdminSettingsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AdminSettings
+        fields = [
+            'id',
+            'status',
+            'appointmentLength',
+        ]
+
+class StatisticSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Statistic
+        fields = [
+            'id',
+            'numberOfFirstTimeDonations',
+            'totalBookedAppointments',
+            'aged18to27',
+            'aged28to37',
+            'aged38to47',
+            'aged48to57',
+            'aged58to68',
+            'acceptedRequests',
+            'rejectedRequests',
+            'cancelledRequests',
+        ]
