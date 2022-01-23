@@ -1,6 +1,6 @@
 from django.db import router
 from django.urls import path, include
-from .views import appointmentViews, donationQuestionView, faqQuestionListView, personView
+from .views import appointmentViews, donationQuestionView, faqQuestionListView, personView, donationQuestinTranslationViews
 from rest_framework import routers
 
 
@@ -18,9 +18,9 @@ urlpatterns =[
     path('appointment_status', appointmentViews.appointmentStatusView.as_view()),
     path('appointment', appointmentViews.appointmentCreate.as_view()),
     #path('appointment/<int:pk>', views.appointmentDetail.as_view()),
-
-    path('donationquestions', donationQuestionView.donationQuestionList.as_view()),
+    path('donationquestions', donationQuestinTranslationViews.donationQuestionTranslationList.as_view()),
     path('faqquestions', faqQuestionListView.faqQuestionsList.as_view()),
+
     # todo onboardingpages
     # todo request, capacities only via socket
     
