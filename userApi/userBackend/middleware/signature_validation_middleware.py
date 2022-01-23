@@ -2,9 +2,7 @@ import hmac
 from base64 import b64encode
 from hashlib import sha256
 import os
-import re
 from django.http import HttpResponseForbidden
-from django.conf import settings
 class SignatureValidationMiddleware:
 
     def __init__(self, get_response):
@@ -20,7 +18,7 @@ class SignatureValidationMiddleware:
         
     def is_valid(self, request):
         api_signature = request.headers.get('Signature')
-        secret = settings.SIGNATURE_SECRET
+        secret = os.environ.get('API_KEY')
         body = request.body.decode('utf-8') or ""
         params = [
             secret, request.method,
