@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'userBackend.middleware.test_middleware.TestMiddelware',
+    'userBackend.middleware.signature_validation_middleware.SignatureValidationMiddleware',
 ]
 
 ROOT_URLCONF = 'userBackend.urls'
@@ -131,6 +131,8 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SIGNATURE_SECRET = os.environ.get('SIGNATURE_SECRET') or "Yq3t6w9z$B&E)H@McQfTjWnZr4u7x!A%"
 
 
 
