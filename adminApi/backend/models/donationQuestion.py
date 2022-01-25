@@ -2,7 +2,8 @@ from django.db import models
 
 
 class DonationQuestion(models.Model):
-    body = models.TextField()
+
+    position = models.IntegerField(default = 1)
     isYesCorrect = models.BooleanField()
 
     def get_id(self):
