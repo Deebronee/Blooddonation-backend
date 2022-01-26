@@ -5,3 +5,6 @@ class FaqQuestion(models.Model):
 
     def get_id(self):
         return self.id
+
+    class Meta:
+        db_table = "FaqQuestion"

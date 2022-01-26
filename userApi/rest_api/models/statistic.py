@@ -12,3 +12,6 @@ class Statistic(models.Model):
     acceptedRequests = models.IntegerField()
     rejectedRequests = models.IntegerField()
     cancelledRequests = models.IntegerField()
+
+    class Meta:
+        db_table = "Statistic"

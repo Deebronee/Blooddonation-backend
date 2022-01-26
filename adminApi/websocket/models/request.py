@@ -13,4 +13,7 @@ class Request(models.Model):
     def get_id(self):
         return self.id
 
+    class Meta:
+        db_table = "Request"
+
 
