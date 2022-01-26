@@ -14,3 +14,5 @@ class Request(models.Model):
         return self.id
 
 
+    class Meta:
+        db_table = "Request"
