@@ -1,9 +1,9 @@
 from typing import Any, Tuple, Dict, OrderedDict
 from rest_framework import status
 from rest_framework.utils.serializer_helpers import ReturnList
-from backend.serializers import AppointmentSerializer
+from websocket.serializers import AppointmentSerializer
 
-from backend.models.appointment import Appointment
+from websocket.models.appointment import Appointment
 
 from .decorators import action
 from djangochannelsrestframework.settings import api_settings

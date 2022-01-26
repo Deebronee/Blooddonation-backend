@@ -1,5 +1,5 @@
 from django.db import models
-from backend.models.faqQuestion import FaqQuestion
+from websocket.models.faqQuestion import FaqQuestion
 
 class FaqQuestionTranslation(models.Model):
     head = models.CharField(max_length=250, blank=False)

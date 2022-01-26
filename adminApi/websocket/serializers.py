@@ -1,15 +1,15 @@
 from datetime import datetime
 from rest_framework import fields, serializers, viewsets
-from backend.models.appointment import Appointment
-from backend.models.donationQuestion import DonationQuestion
-from backend.models.person import Person
-from backend.models.request import Request
-from backend.models.capacity import Capacity
-from backend.models.faqQuestion import FaqQuestion
-from backend.models.donationQuestionTranslation import DonationQuestionTranslation
-from backend.models.faqQuestionTranslation import FaqQuestionTranslation
-from backend.models.adminSettings import AdminSettings
-from backend.models.statistic import Statistic
+from websocket.models.appointment import Appointment
+from websocket.models.donationQuestion import DonationQuestion
+from websocket.models.person import Person
+from websocket.models.request import Request
+from websocket.models.capacity import Capacity
+from websocket.models.faqQuestion import FaqQuestion
+from websocket.models.donationQuestionTranslation import DonationQuestionTranslation
+from websocket.models.faqQuestionTranslation import FaqQuestionTranslation
+from websocket.models.adminSettings import AdminSettings
+from websocket.models.statistic import Statistic
 
 
 

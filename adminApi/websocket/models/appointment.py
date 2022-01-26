@@ -1,6 +1,6 @@
 from django.db import models
-from backend.models.person import Person
-from backend.models.request import Request as r
+from websocket.models.person import Person
+from websocket.models.request import Request as r
 from datetime import datetime
 from django.db.models.signals import pre_save
 from django.dispatch import receiver

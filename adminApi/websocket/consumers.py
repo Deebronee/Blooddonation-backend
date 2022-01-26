@@ -2,15 +2,15 @@ from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
 from djangochannelsrestframework.observer import model_observer
 from djangochannelsrestframework.decorators import action
 
-from backend.customMixins.createCapacitiesMixin import CreateCapacitiesMixin
+from websocket.customMixins.createCapacitiesMixin import CreateCapacitiesMixin
 
-from .customMixins.createAppointmentMixin import CreateAppointmentMixin
-from .customMixins.getAllCapacitiesMixin import GetAllCapacitiesMixin
-from .customMixins.getAllAppointmentsMixin import GetAllAppointmentsMixin
-from .customMixins.deleteCapacityMixin import DeleteCapacityMixin
-from .customMixins.createCapacitiesMixin import CreateCapacitiesMixin
-from backend.serializers import AppointmentSerializer
-from backend.models.appointment import Appointment
+from websocket.customMixins.createAppointmentMixin import CreateAppointmentMixin
+from websocket.customMixins.getAllCapacitiesMixin import GetAllCapacitiesMixin
+from websocket.customMixins.getAllAppointmentsMixin import GetAllAppointmentsMixin
+from websocket.customMixins.deleteCapacityMixin import DeleteCapacityMixin
+from websocket.customMixins.createCapacitiesMixin import CreateCapacitiesMixin
+from websocket.serializers import AppointmentSerializer
+from websocket.models.appointment import Appointment
 
 
 # Get list of appointments, patch appointments, create appointments via JSON
