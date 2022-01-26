@@ -20,18 +20,22 @@ class SignatureValidationMiddleware:
         api_signature = request.headers.get('Signature')
         secret = os.environ.get('API_KEY')
         body = request.body.decode('utf-8') or ""
-        params = [
-            secret, request.method,
-            request.path, body
-        ]
-        data = "-".join(params)
-        data = data.encode('utf-8')
+        data = secret + "-" + request.method + "-" + request.path + "-" + body
+        dataBytes = data.encode('utf-8')
         computed_sig = hmac.new(
             secret.encode('utf-8'),
-            msg=data, digestmod=sha256
+            msg=dataBytes, digestmod=sha256
         ).digest()
-        print(request.headers)
-        print(data)
+
         signature = b64encode(computed_sig).decode()
+
+        print("request.headers")
+        print(request.headers)
+        print("data")
+        print(data)
+        print("bytes")
+        print(dataBytes)
+        print("signature")
         print(signature)
+
         return signature == api_signature
