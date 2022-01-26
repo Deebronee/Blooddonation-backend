@@ -19,7 +19,7 @@ class SignatureValidationMiddleware:
             return HttpResponseForbidden()
         
     def is_valid(self, request):
-        api_signature = request.headers.get('Signature')
+        api_signature = request.headers.get('signature')
         secret = settings.SIGNATURE_SECRET
         body = request.body.decode('utf-8') or ""
         data = secret + "-" + request.method + "-" + request.path + "-" + body
@@ -30,15 +30,5 @@ class SignatureValidationMiddleware:
         ).digest()
 
         signature = b64encode(computed_sig).decode()
-
-        print("request.headers")
-        print(request.headers)
-        print("data")
-        print(data)
-        print("bytes")
-        print(dataBytes)
-        print("signature")
-        print(signature)
-
-        return True
-        #return signature == api_signature
+        
+        return signature == api_signature
