@@ -9,12 +9,13 @@ on:
       - main
 
 jobs:
-  build-user-api:
+  admin-api:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
         python-version: [3.7, 3.8, 3.9]
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -23,18 +24,18 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
-        cd userApi/
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r adminApi/requirements.txt
     - name: Run Tests
-      run: |
-        python manage.py test
-  build-user-api:
+      run: python adminApi/manage.py test
+
+  user-api:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
         python-version: [3.7, 3.8, 3.9]
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -43,9 +44,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
-        cd adminApi/
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r userApi/requirements.txt
     - name: Run Tests
-      run: |
-        python manage.py test
+      run: python userApi/manage.py test
