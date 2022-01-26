@@ -25,8 +25,8 @@ SESSION_COOKIE_SECURE = False
 # if a new app is created add it to this list
 
 INSTALLED_APPS = [
+    'websocket',
     'channels',
-    'backend',
     'rest_framework',
     'djangochannelsrestframework',
     'django.contrib.admin',
@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'bdbackend.urls'
+ROOT_URLCONF = 'adminBackend.urls'
 
 TEMPLATES = [
     {
@@ -65,8 +65,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'bdbackend.wsgi.application'
-ASGI_APPLICATION = "bdbackend.asgi.application"
+WSGI_APPLICATION = 'adminBackend.wsgi.application'
+ASGI_APPLICATION = "adminBackend.asgi.application"
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',

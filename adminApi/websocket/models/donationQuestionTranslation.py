@@ -1,5 +1,5 @@
 from django.db import models
-from backend.models.donationQuestion import DonationQuestion
+from websocket.models.donationQuestion import DonationQuestion
 
 class DonationQuestionTranslation(models.Model):
     head = models.CharField(max_length=250, blank=False)

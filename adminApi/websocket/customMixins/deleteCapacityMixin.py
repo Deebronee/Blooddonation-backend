@@ -1,7 +1,7 @@
 from typing import Any, Tuple, Dict, OrderedDict
 from rest_framework import status
 
-from backend.models.capacity import Capacity
+from websocket.models.capacity import Capacity
 
 from .decorators import action
 from djangochannelsrestframework.settings import api_settings

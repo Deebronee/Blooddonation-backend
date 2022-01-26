@@ -8,14 +8,14 @@ from djangochannelsrestframework.observer.model_observer import Action
 from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
 from rest_framework import response, status
 from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
-from backend.models.capacity import Capacity
-from backend.serializers import AppointmentSerializer
+from websocket.models.capacity import Capacity
+from websocket.serializers import AppointmentSerializer
 from django.core.serializers.json import DjangoJSONEncoder
 import io
 from rest_framework.parsers import JSONParser
 
 
-from backend.models.appointment import Appointment
+from websocket.models.appointment import Appointment
 
 from .decorators import action
 from djangochannelsrestframework.settings import api_settings
