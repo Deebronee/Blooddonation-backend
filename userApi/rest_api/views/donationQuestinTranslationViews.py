@@ -18,9 +18,16 @@ from django.utils.dateparse import parse_date, parse_datetime, parse_time
 from rest_framework import status
 import math
 
+from rest_api.models.donationQuestionTranslation import DonationQuestionTranslation
+
 class donationQuestionTranslationList(generics.ListCreateAPIView):
-    queryset = DonationQuestion.objects.all()
     serializer_class = DonationQuestionTranslationSerializer
+
+    def get_queryset(self):
+        language = self.request.query_params.get('language')
+        queryset = DonationQuestionTranslation.objects.filter(language=language)
+            
+        return queryset
 
 # creates ,update ,deleate ,patch
 class donationQuestionTranslationDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -4,7 +4,7 @@ from django.http import HttpResponse, response
 from rest_framework import generics, serializers, viewsets
 from rest_framework.views import APIView
 #from rest_framework.decorators import Response
-from rest_api.rest_api.serializers import FaqQuestionSerializer ,AppointmentSerializer, DonationQuestionSerializer, RequestIDSerializer, RequestSerializer, PersonSerializer, CapacitySerializer
+from rest_api.rest_api.serializers import FaqQuestionTranslationSerializer ,AppointmentSerializer, DonationQuestionSerializer, RequestIDSerializer, RequestSerializer, PersonSerializer, CapacitySerializer
 from rest_api.models.appointment import Appointment
 from rest_api.models.donationQuestion import DonationQuestion
 from rest_api.models.request import Request
@@ -18,6 +18,17 @@ from django.utils.dateparse import parse_date, parse_datetime, parse_time
 from rest_framework import status
 import math
 
-class faqQuestionsList(generics.ListCreateAPIView):
+from rest_api.models.faqQuestionTranslation import FaqQuestionTranslation
+
+class faqQuestionsTranslationList(generics.ListCreateAPIView):
+    serializer_class = FaqQuestionTranslationSerializer
+
+    def get_queryset(self):
+        language = self.request.query_params.get('language')
+        queryset = FaqQuestionTranslation.objects.filter(language=language)
+            
+        return queryset
+
+class faqQuestionsTranslationDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = FaqQuestion.objects.all()
-    serializer_class = FaqQuestionSerializer
+    serializer_class = FaqQuestionTranslationSerializer

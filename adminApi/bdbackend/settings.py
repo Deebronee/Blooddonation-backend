@@ -33,8 +33,8 @@ ALLOWED_HOSTS = []
 # if a new app is created add it to this list
 
 INSTALLED_APPS = [
-    'channels',
     'backend',
+    'channels',
     'rest_framework',
     'djangochannelsrestframework',
     'django.contrib.admin',
@@ -91,7 +91,7 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / '../db.sqlite3',
     }
 }
 

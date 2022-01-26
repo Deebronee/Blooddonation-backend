@@ -21,3 +21,4 @@ import math
 class donationQuestionList(generics.ListCreateAPIView):
     queryset = DonationQuestion.objects.all()
     serializer_class = DonationQuestionSerializer
+
