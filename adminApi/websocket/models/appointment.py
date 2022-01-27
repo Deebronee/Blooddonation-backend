@@ -38,3 +38,5 @@ class Appointment(models.Model):
     #    serializer = app
 
 
+    class Meta:
+        db_table = "Appointment"

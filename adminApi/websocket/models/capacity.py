@@ -18,3 +18,6 @@ class Capacity(models.Model):
 
     def get_slots(self):
         return self.slots
+
+    class Meta:
+        db_table = "Capacity"

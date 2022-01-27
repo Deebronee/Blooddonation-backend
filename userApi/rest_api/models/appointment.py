@@ -37,4 +37,5 @@ class Appointment(models.Model):
     #def post(self, request, format = json)
     #    serializer = app
 
-
+    class Meta:
+        db_table = "Appointment"
