@@ -2,10 +2,11 @@ from django.db import models
 from rest_api.models.faqQuestion import FaqQuestion
 
 class FaqQuestionTranslation(models.Model):
-    head = models.CharField(max_length=250, blank=False)
+    id = models.IntegerField(primary_key = True)
+    head = models.TextField(blank=False)
     body = models.TextField(blank=False)
-    language = models.CharField(max_length=250, blank=False)
-    faqQuestion = models.ForeignKey(FaqQuestion, on_delete=models.CASCADE, null = False, blank = False)
+    language = models.CharField(max_length=10, blank=False)
+    faqQuestion = models.IntegerField()
 
     def get_id(self):
         return self.id
