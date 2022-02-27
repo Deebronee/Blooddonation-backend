@@ -9,12 +9,23 @@ from websocket.customMixins.getAllCapacitiesMixin import GetAllCapacitiesMixin
 from websocket.customMixins.getAllAppointmentsMixin import GetAllAppointmentsMixin
 from websocket.customMixins.deleteCapacityMixin import DeleteCapacityMixin
 from websocket.customMixins.createCapacitiesMixin import CreateCapacitiesMixin
+from websocket.customMixins.createFaqQuestionTranslationsMixin import CreateFaqQuestionTranslationsMixin
+from websocket.customMixins.createDonationQuestionTranslationsMixin import CreateDonationQuestionTranslationsMixin
+
 from websocket.serializers import AppointmentSerializer
 from websocket.models.appointment import Appointment
 
 
 # Get list of appointments, patch appointments, create appointments via JSON
-class WebsocketConsumer(GenericAsyncAPIConsumer, GetAllCapacitiesMixin, GetAllAppointmentsMixin, CreateAppointmentMixin, DeleteCapacityMixin, CreateCapacitiesMixin):
+class WebsocketConsumer(GenericAsyncAPIConsumer, 
+                        GetAllCapacitiesMixin, 
+                        GetAllAppointmentsMixin, 
+                        CreateAppointmentMixin, 
+                        DeleteCapacityMixin, 
+                        CreateCapacitiesMixin, 
+                        CreateFaqQuestionTranslationsMixin,
+                        CreateDonationQuestionTranslationsMixin):
+
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
 
