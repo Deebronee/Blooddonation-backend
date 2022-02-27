@@ -4,9 +4,11 @@ from django.http import HttpResponse, response
 from rest_framework import generics, serializers, viewsets
 from rest_framework.views import APIView
 #from rest_framework.decorators import Response
-from rest_api.rest_api.serializers import FaqQuestionSerializer ,AppointmentSerializer, DonationQuestionSerializer, RequestIDSerializer, RequestSerializer, PersonSerializer, CapacitySerializer
+from rest_api.rest_api.serializers import FaqQuestionSerializer ,AppointmentSerializer, DonationQuestionSerializer, RequestIDSerializer, RequestSerializer, PersonSerializer, CapacitySerializer, DonationQuestionTranslationSerializer
 from rest_api.models.appointment import Appointment
 from rest_api.models.donationQuestion import DonationQuestion
+from rest_api.models.donationQuestionTranslation import DonationQuestionTranslation
+
 from rest_api.models.request import Request
 from rest_api.models.person import Person
 from rest_api.models.capacity import Capacity
@@ -18,6 +20,19 @@ from django.utils.dateparse import parse_date, parse_datetime, parse_time
 from rest_framework import status
 import math
 
-class donationQuestionList(generics.ListCreateAPIView):
-    queryset = DonationQuestion.objects.all()
-    serializer_class = DonationQuestionSerializer
+
+class donationQuestionList(APIView):
+
+    def get(self, args):
+        questionsQueryset = DonationQuestion.objects.all()
+        translationsQueryset = DonationQuestionTranslation.objects.all()
+    
+        questionsSerializer = DonationQuestionSerializer(questionsQueryset, many=True)
+        translationSerializer = DonationQuestionTranslationSerializer(translationsQueryset, many = True)
+
+        content = {
+            "donationQuestions" : questionsSerializer.data,
+            "donationQuestionTranslations": translationSerializer.data
+        }
+
+        return Response(content)

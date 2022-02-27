@@ -3,14 +3,14 @@ from djangochannelsrestframework.observer import model_observer
 from djangochannelsrestframework.decorators import action
 
 from websocket.customMixins.createCapacitiesMixin import CreateCapacitiesMixin
-
+from websocket.customMixins.deleteAppointmentMixin import DeleteAppointmentMixin
 from websocket.customMixins.createAppointmentMixin import CreateAppointmentMixin
 from websocket.customMixins.getAllCapacitiesMixin import GetAllCapacitiesMixin
 from websocket.customMixins.getAllAppointmentsMixin import GetAllAppointmentsMixin
 from websocket.customMixins.deleteCapacityMixin import DeleteCapacityMixin
 from websocket.customMixins.createCapacitiesMixin import CreateCapacitiesMixin
-from websocket.customMixins.createFaqQuestionTranslationsMixin import CreateFaqQuestionTranslationsMixin
-from websocket.customMixins.createDonationQuestionTranslationsMixin import CreateDonationQuestionTranslationsMixin
+from websocket.customMixins.createFaqQuestionsMixin import CreateFaqQuestionsMixin
+from websocket.customMixins.createDonationQuestionsMixin import CreateDonationQuestionsMixin
 
 from websocket.serializers import AppointmentSerializer
 from websocket.models.appointment import Appointment
@@ -23,8 +23,9 @@ class WebsocketConsumer(GenericAsyncAPIConsumer,
                         CreateAppointmentMixin, 
                         DeleteCapacityMixin, 
                         CreateCapacitiesMixin, 
-                        CreateFaqQuestionTranslationsMixin,
-                        CreateDonationQuestionTranslationsMixin):
+                        CreateFaqQuestionsMixin,
+                        CreateDonationQuestionsMixin,
+                        DeleteAppointmentMixin):
 
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer

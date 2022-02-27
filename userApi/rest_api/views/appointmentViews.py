@@ -69,9 +69,9 @@ class appointmentStatusView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         id = self.request.query_params.get('id')
-        queryset = Appointment.objects.filter(id=id)
-            
-        return queryset
+        appointment = Appointment.objects.filter(id=id)
+        
+        return appointment
 
 
 class appointmentCreate(generics.ListCreateAPIView): 
@@ -118,3 +118,12 @@ class appointmentCreate(generics.ListCreateAPIView):
         error = {'error': 'HTTP_400_BAD_REQUEST' , 'message':'du bist ein schlingel'}
         return Response(data=json.loads(json.dumps(error)) , status = status.HTTP_400_BAD_REQUEST)
                     
+
+class appointmentCancel(APIView):
+
+    def get(self, request):
+        
+        id = self.request.query_params.get('id')
+        appointment = Appointment.objects.filter(id=id).delete()
+
+        return Response("successful") 

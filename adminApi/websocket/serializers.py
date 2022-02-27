@@ -114,19 +114,20 @@ class DonationQuestionSerializer(serializers.ModelSerializer):
             'isYesCorrect',
         ]
 
+
+
 class DonationQuestionTranslationSerializer(serializers.ModelSerializer):
-    donationQuestion = DonationQuestionSerializer(required = True)
 
     class Meta:
         model = DonationQuestionTranslation
         fields =[ 
         'id', 
-        'head',
         'body',
         'language',
         'donationQuestion',
         ] 
         
+'''
     def create(self, validated_data):
         donationQuestion_data = validated_data.pop('donationQuestion')
         
@@ -149,7 +150,7 @@ class DonationQuestionTranslationSerializer(serializers.ModelSerializer):
         newDonationQuestion.save()
 
         return instance
-
+'''
 class FaqQuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -160,7 +161,6 @@ class FaqQuestionSerializer(serializers.ModelSerializer):
         ] 
 
 class FaqQuestionTranslationSerializer(serializers.ModelSerializer):
-    faqQuestion = FaqQuestionSerializer(required = True)
 
     class Meta:
         model = FaqQuestionTranslation
@@ -172,6 +172,7 @@ class FaqQuestionTranslationSerializer(serializers.ModelSerializer):
         'faqQuestion',
         ] 
 
+'''
     def create(self, validated_data):
         faqQuestion_data = validated_data.pop('faqQuestion')
         newFaqQuestion = FaqQuestion.objects.create(**faqQuestion_data)
@@ -192,6 +193,7 @@ class FaqQuestionTranslationSerializer(serializers.ModelSerializer):
         newFaqQuestion.save()
 
         return instance
+'''
 
 class AdminSettingsSerializer(serializers.ModelSerializer):
 
