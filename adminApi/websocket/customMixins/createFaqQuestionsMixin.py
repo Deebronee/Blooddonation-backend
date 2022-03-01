@@ -75,23 +75,3 @@ class CreateFaqQuestionsMixin:
         }
 }
 '''
-'''
-[{	
-            "head" : "Test1",
-            "body" : "Test1",
-            "language" : "de_DE",
-            "faqQuestion" : 
-                {
-                    "position" : 0
-                }
-        },
-        {	
-            "head" : "Test2",
-            "body" : "Test2",
-            "language" : "de_DE",
-            "faqQuestion" : 
-                {
-                    "position" : 1
-                }
-        }]
-'''
