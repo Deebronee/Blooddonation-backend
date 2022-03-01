@@ -1,4 +1,4 @@
-from models.appointment import Appointment
+from websocket.models.appointment import Appointment
 import datetime
 
 
