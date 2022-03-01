@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # if a new app is created add it to this list
 
 INSTALLED_APPS = [
+    'django_crontab',
     'websocket',
     'channels',
     'rest_framework',
@@ -43,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +142,6 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CRONTAB = [
+CRONJOBS = [
     ('0 0 * * *', 'websocket.cron.cron_job')
 ]
