@@ -7,3 +7,4 @@ markdown
 django-filter
 channels_redis
 djangochannelsrestframework
+django_crontab
