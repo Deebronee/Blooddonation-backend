@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -141,5 +142,6 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
+CRONTAB = [
+    ('0 0 * * *')
+]
