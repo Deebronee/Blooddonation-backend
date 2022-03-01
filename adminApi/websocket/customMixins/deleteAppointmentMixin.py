@@ -18,7 +18,7 @@ class DeleteAppointmentMixin:
         {
             "action" : "deleteCapacity",
             "request_id" : 123,
-            "pk" : "1"		
+            "id" : 1		
         }
         '''
         id = kwargs['id']
@@ -26,9 +26,6 @@ class DeleteAppointmentMixin:
         instance.delete()
         return "success", status.HTTP_204_NO_CONTENT
 
-    def deleteAllCapacities(self, **kwargs) -> Tuple[None, int]:
-        Capacity.objects.all().delete()
-        return "success", status.HTTP_204_NO_CONTENT
 
     def get_appointment(self, id, **kwargs):
         try:
