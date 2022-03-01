@@ -143,5 +143,5 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONTAB = [
-    ('0 0 * * *')
+    ('0 0 * * *', 'websocket.cron.cron_job')
 ]
