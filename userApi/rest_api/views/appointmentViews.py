@@ -111,10 +111,11 @@ class appointmentCreate(generics.ListCreateAPIView):
             if (startOfN <= start_time) and \
                 endCap >= endApp and \
                 slotsOfN > len(reserved.filter(start__time = start_time)) and\
-                serializer.is_valid():
-                serializer.save()
+                serializer.is_valid():                                                 
+                serializer.save()                                                        
+                totalBookedAppointments()                                                  #increments total booked appointment statistic
                 return Response(serializer.data, status = status.HTTP_201_CREATED)
-        
+        print(serializer.errors)
         error = {'error': 'HTTP_400_BAD_REQUEST' , 'message':'du bist ein schlingel'}
         return Response(data=json.loads(json.dumps(error)) , status = status.HTTP_400_BAD_REQUEST)
                     
@@ -125,5 +126,5 @@ class appointmentCancel(APIView):
         
         id = self.request.query_params.get('id')
         appointment = Appointment.objects.filter(id=id).delete()
-
+        cancelledRequests()
         return Response("successful") 
