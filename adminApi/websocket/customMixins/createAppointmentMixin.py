@@ -13,6 +13,7 @@ from websocket.serializers import AppointmentSerializer
 from django.core.serializers.json import DjangoJSONEncoder
 import io
 from rest_framework.parsers import JSONParser
+from websocket.adminStatisticFunctions import acceptedRequests, rejectedRequests, aged18to27, aged28to37, aged38to47, aged48to57, aged58to68, numberOfFirstTimeDonations
 
 
 from websocket.models.appointment import Appointment
@@ -22,6 +23,11 @@ from djangochannelsrestframework.settings import api_settings
 
 def addTime(setTime, timeToAdd):
     return ((datetime.combine(date.today(), setTime) + timeToAdd).time()) 
+
+def calcAge(birthdate):
+    today = date.today()
+    age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+    return age
 
 class CreateAppointmentMixin:
 
@@ -92,11 +98,6 @@ class CreateAppointmentMixin:
         serializer.save()
     
 
-
-
-        
-
-
     # TODO patch request via websocket
     @action()
     def updateAppointment(self, data: QueryDict, **kwargs) -> Tuple[ReturnDict, int]:
@@ -107,7 +108,7 @@ class CreateAppointmentMixin:
         {
 	        "action" : "updateAppointment",
             "request_id" : 123,
-            "pk" : 1,
+            "id" : 1,
 	        "data" : 
 		        {
         		    "request" : 
@@ -124,8 +125,38 @@ class CreateAppointmentMixin:
             instance=instance, data=data, partial=True
         )
         serializer.is_valid(raise_exception=True)
-        serializer.save()
 
+        appointmentStatus = data['request']['status']
+        #print(appointmentStatus)
+        #print(instance.person.birthday)
+        birthdate = instance.person.birthday
+        #print(birthdate)
+
+        age = calcAge(birthdate)
+        #print(age)
+        #print(instance)
+        firstTime = instance.person.firstDonation
+        #print(firstTime)
+        #age = instance['person']['age']
+        #print(age)
+
+        if appointmentStatus == "accepted":
+            acceptedRequests()
+            if 18 <= age <= 27:
+                aged18to27()
+            if 28 <= age <= 37:
+                aged28to37()
+            if 38 <= age <= 47:
+                aged38to47()
+            if 48 <= age <= 57:
+                aged48to57()
+            if 58 <= age <= 68:
+                aged58to68()
+            if firstTime:
+                numberOfFirstTimeDonations()
+        if appointmentStatus == "rejected":
+            rejectedRequests()
+        serializer.save()
         return serializer.data, status.HTTP_200_OK
 
 

@@ -11,6 +11,8 @@ from websocket.customMixins.deleteCapacityMixin import DeleteCapacityMixin
 from websocket.customMixins.createCapacitiesMixin import CreateCapacitiesMixin
 from websocket.customMixins.createFaqQuestionsMixin import CreateFaqQuestionsMixin
 from websocket.customMixins.createDonationQuestionsMixin import CreateDonationQuestionsMixin
+from websocket.customMixins.getAllFaqQuestionsMixin import GetAllFaqQuestionsMixin
+from websocket.customMixins.getAllDonationQuestionsMixin import GetAllDonationQuestionsMixin
 
 from websocket.serializers import AppointmentSerializer
 from websocket.models.appointment import Appointment
@@ -25,7 +27,9 @@ class WebsocketConsumer(GenericAsyncAPIConsumer,
                         CreateCapacitiesMixin, 
                         CreateFaqQuestionsMixin,
                         CreateDonationQuestionsMixin,
-                        DeleteAppointmentMixin):
+                        DeleteAppointmentMixin,
+                        GetAllFaqQuestionsMixin,
+                        GetAllDonationQuestionsMixin):
 
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer

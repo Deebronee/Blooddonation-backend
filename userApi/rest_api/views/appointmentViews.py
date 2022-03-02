@@ -17,7 +17,7 @@ from datetime import time, timedelta, datetime, date
 from django.utils.dateparse import parse_date, parse_datetime, parse_time
 from rest_framework import status
 import math
-
+from rest_api.userStatisticFunctions import totalBookedAppointments, cancelledRequests
 
 def addTime(setTime, timeToAdd):
         return ((datetime.combine(date.today(), setTime) + timeToAdd).time()) 
