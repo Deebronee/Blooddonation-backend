@@ -17,7 +17,7 @@ from datetime import time, timedelta, datetime, date
 from django.utils.dateparse import parse_date, parse_datetime, parse_time
 from rest_framework import status
 import math
-
+from rest_api.userStatisticFunctions import totalBookedAppointments, cancelledRequests
 
 def addTime(setTime, timeToAdd):
         return ((datetime.combine(date.today(), setTime) + timeToAdd).time()) 
@@ -86,10 +86,9 @@ class appointmentCreate(generics.ListCreateAPIView):
         return queryset
     
     def post(self, request):
-        data = request.data.copy()
-        data.__setitem__('request.created', datetime.now())
-        data.__setitem__('request.status', 'requested')
-        serializer = AppointmentSerializer(data=data)
+        appointmentRequest = {"created" : datetime.now(), "status" : "pending"}
+        request.data['request'] = appointmentRequest
+        serializer = AppointmentSerializer(data=request.data)
       
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
         appointmentLength = int(60)                                                       # in minutes                   
@@ -111,10 +110,11 @@ class appointmentCreate(generics.ListCreateAPIView):
             if (startOfN <= start_time) and \
                 endCap >= endApp and \
                 slotsOfN > len(reserved.filter(start__time = start_time)) and\
-                serializer.is_valid():
-                serializer.save()
+                serializer.is_valid():                                                 
+                serializer.save()                                                        
+                totalBookedAppointments()                                                  #increments total booked appointment statistic
                 return Response(serializer.data, status = status.HTTP_201_CREATED)
-        
+        print(serializer.errors)
         error = {'error': 'HTTP_400_BAD_REQUEST' , 'message':'du bist ein schlingel'}
         return Response(data=json.loads(json.dumps(error)) , status = status.HTTP_400_BAD_REQUEST)
                     
@@ -125,5 +125,5 @@ class appointmentCancel(APIView):
         
         id = self.request.query_params.get('id')
         appointment = Appointment.objects.filter(id=id).delete()
-
+        cancelledRequests()
         return Response("successful") 

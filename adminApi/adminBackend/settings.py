@@ -25,7 +25,7 @@ SESSION_COOKIE_SECURE = False
 # if a new app is created add it to this list
 
 INSTALLED_APPS = [
-    'django_crontab',
+    #'django_crontab',
     'websocket',
     'channels',
     'rest_framework',
