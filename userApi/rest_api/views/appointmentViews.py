@@ -33,7 +33,7 @@ class freeAppointmentsView(APIView):
     def get(self, request, format=None):
         free_List = []         
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
-        appointmentLength = int(60)                                                       # in minutes                     
+        appointmentLength = int(15)                                                       # in minutes                     
 #                                                                                           one slot is one hour, in minutes
         date_str = parse_date(str(request.GET.get('date')))                               # access date via request 
         reserved = Appointment.objects.filter(start__date = date_str)                     # getting all reserved appointments of a certain day 
@@ -91,7 +91,7 @@ class appointmentCreate(generics.ListCreateAPIView):
         serializer = AppointmentSerializer(data=request.data)
       
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
-        appointmentLength = int(60)                                                       # in minutes                   
+        appointmentLength = int(15)                                                       # in minutes                   
 #                                                                                           one slot is one hour, in minutes
         start = parse_datetime(str(request.data.get('start')))                            # access date via request 
         start_date = start.date()

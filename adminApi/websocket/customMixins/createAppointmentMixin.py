@@ -64,7 +64,7 @@ class CreateAppointmentMixin:
         #self.perform_create(serializer, **kwargs)
         #return serializer.data, status.HTTP_201_CREATED
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
-        appointmentLength = int(60)                                                       # in minutes                   
+        appointmentLength = int(15)                                                       # in minutes                   
 #                                                                                           one slot is one hour, in minutes
         start = parse_datetime(str(data['start']))                            # access date via request 
         start_date = start.date()
