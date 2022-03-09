@@ -4,6 +4,6 @@ import datetime
 
 
 def cron_job():
-    time = datetime.datetime.now() - datetime.timedelta(days = 14) 
+    time = datetime.datetime.now() - datetime.timedelta(days = 7) 
     objects_to_delete = Appointment.objects.filter(Appointment.start<=time)
     objects_to_delete.delete()
