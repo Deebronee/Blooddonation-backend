@@ -1,18 +1,13 @@
-from datetime import time, timedelta, datetime, date
+from datetime import timedelta, datetime, date
 import json
-from typing import Any, Tuple, Dict, Optional, OrderedDict, Union
+from typing import Tuple
 from django.db.models import query
 from django.http.request import QueryDict
 from django.utils.dateparse import parse_datetime
-from djangochannelsrestframework.observer.model_observer import Action
-from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
-from rest_framework import response, status
-from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
+from rest_framework import status
+from rest_framework.utils.serializer_helpers import ReturnDict
 from websocket.models.capacity import Capacity
 from websocket.serializers import AppointmentSerializer
-from django.core.serializers.json import DjangoJSONEncoder
-import io
-from rest_framework.parsers import JSONParser
 from websocket.adminStatisticFunctions import acceptedRequests, rejectedRequests, aged18to27, aged28to37, aged38to47, aged48to57, aged58to68, numberOfFirstTimeDonations
 
 
@@ -55,14 +50,8 @@ class CreateAppointmentMixin:
         '''
         dic = {'created': datetime.now(), 'status': 'pending'}
         
-        #data.__setitem__('request.created', datetime.now())
-        #data.__setitem__('request.status', 'pending')
         data['request'] = dic
-        #print(data)
         serializer = AppointmentSerializer(data=data)
-        #serializer.is_valid(raise_exception=True)
-        #self.perform_create(serializer, **kwargs)
-        #return serializer.data, status.HTTP_201_CREATED
 #                                                                                           appointment length should be exchangeable Verwaltungsoberfläche                                                          
         appointmentLength = int(15)                                                       # in minutes                   
 #                                                                                           one slot is one hour, in minutes
@@ -127,18 +116,9 @@ class CreateAppointmentMixin:
         serializer.is_valid(raise_exception=True)
 
         appointmentStatus = data['request']['status']
-        #print(appointmentStatus)
-        #print(instance.person.birthday)
         birthdate = instance.person.birthday
-        #print(birthdate)
-
         age = calcAge(birthdate)
-        #print(age)
-        #print(instance)
         firstTime = instance.person.firstDonation
-        #print(firstTime)
-        #age = instance['person']['age']
-        #print(age)
 
         if appointmentStatus == "accepted":
             acceptedRequests()

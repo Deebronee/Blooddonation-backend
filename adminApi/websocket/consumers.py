@@ -1,7 +1,4 @@
 from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
-from djangochannelsrestframework.observer import model_observer
-from djangochannelsrestframework.decorators import action
-
 from websocket.customMixins.createCapacitiesMixin import CreateCapacitiesMixin
 from websocket.customMixins.deleteAppointmentMixin import DeleteAppointmentMixin
 from websocket.customMixins.createAppointmentMixin import CreateAppointmentMixin
@@ -13,9 +10,13 @@ from websocket.customMixins.createFaqQuestionsMixin import CreateFaqQuestionsMix
 from websocket.customMixins.createDonationQuestionsMixin import CreateDonationQuestionsMixin
 from websocket.customMixins.getAllFaqQuestionsMixin import GetAllFaqQuestionsMixin
 from websocket.customMixins.getAllDonationQuestionsMixin import GetAllDonationQuestionsMixin
-
+from websocket.customMixins.newAppointmentsMixin import NewAppointmentsMixin
+from websocket.customMixins.getStatisticMixin import GetStatisticMixin
 from websocket.serializers import AppointmentSerializer
 from websocket.models.appointment import Appointment
+#import asyncio
+#import psycopg2
+#import os
 
 
 # Get list of appointments, patch appointments, create appointments via JSON
@@ -29,21 +30,10 @@ class WebsocketConsumer(GenericAsyncAPIConsumer,
                         CreateDonationQuestionsMixin,
                         DeleteAppointmentMixin,
                         GetAllFaqQuestionsMixin,
-                        GetAllDonationQuestionsMixin):
+                        GetAllDonationQuestionsMixin,
+                        NewAppointmentsMixin,
+                        GetStatisticMixin
+                        ):
 
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
-
-    @model_observer(Appointment)
-    async def appointments_activity(self, message, observer=None, **kwargs):
-        await self.send_json(message)
-
-    @appointments_activity.serializer
-    def appointments_activity(self, instance: Appointment, action, **kwargs):
-        return AppointmentSerializer(instance).data
-
-    @action()
-    async def subscribe_to_appointment_activity(self, **kwargs):
-        await self.appointments_activity.subscribe()
-
-   
