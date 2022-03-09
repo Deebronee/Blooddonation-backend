@@ -48,7 +48,7 @@ class CreateAppointmentMixin:
 		    }
         }
         '''
-        dic = {'created': datetime.now(), 'status': 'pending'}
+        dic = {'created': datetime.now(), 'status': 'accepted'}
         
         data['request'] = dic
         serializer = AppointmentSerializer(data=data)
