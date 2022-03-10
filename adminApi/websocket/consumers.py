@@ -14,8 +14,9 @@ from websocket.customMixins.newAppointmentsMixin import NewAppointmentsMixin
 from websocket.customMixins.getStatisticMixin import GetStatisticMixin
 from websocket.serializers import AppointmentSerializer
 from websocket.models.appointment import Appointment
-
-
+#import asyncio
+#import psycopg2
+#import os
 
 
 # Get list of appointments, patch appointments, create appointments via JSON
