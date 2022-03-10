@@ -109,7 +109,7 @@ class CreateAppointmentMixin:
         }
         '''
 
-        instance = Appointment.objects.get(id=data['id'])
+        instance = Appointment.objects.get(id= kwargs['id'])
         serializer = AppointmentSerializer(
             instance=instance, data=data, partial=True
         )
