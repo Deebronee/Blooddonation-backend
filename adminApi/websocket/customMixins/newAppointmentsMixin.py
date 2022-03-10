@@ -25,7 +25,6 @@ class NewAppointmentsMixin:
         for x in range(lastAppID - id):
             myID = id + x + 1
             appointment = Appointment.objects.get(id=myID)
-            print(appointment.request.status)
             if appointment.request.status != "accepted":
                 serialized = AppointmentSerializer(appointment).data
                 newAppointments.append(serialized)
