@@ -8,7 +8,6 @@ from websocket.models.capacity import Capacity
 from websocket.models.faqQuestion import FaqQuestion
 from websocket.models.donationQuestionTranslation import DonationQuestionTranslation
 from websocket.models.faqQuestionTranslation import FaqQuestionTranslation
-from websocket.models.adminSettings import AdminSettings
 from websocket.models.statistic import Statistic
 
 
@@ -195,15 +194,6 @@ class FaqQuestionTranslationSerializer(serializers.ModelSerializer):
         return instance
 '''
 
-class AdminSettingsSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = AdminSettings
-        fields = [
-            'id',
-            'status',
-            'appointmentLength',
-        ]
 
 class StatisticSerializer(serializers.ModelSerializer):
 

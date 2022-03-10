@@ -8,7 +8,6 @@ from rest_api.models.capacity import Capacity
 from rest_api.models.faqQuestion import FaqQuestion
 from rest_api.models.donationQuestionTranslation import DonationQuestionTranslation
 from rest_api.models.faqQuestionTranslation import FaqQuestionTranslation
-from rest_api.models.adminSettings import AdminSettings
 from rest_api.models.statistic import Statistic
 
 
@@ -195,15 +194,6 @@ class FaqQuestionTranslationSerializer(serializers.ModelSerializer):
         return instance
 '''
 
-class AdminSettingsSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = AdminSettings
-        fields = [
-            'id',
-            'status',
-            'appointmentLength',
-        ]
 
 class StatisticSerializer(serializers.ModelSerializer):
 
