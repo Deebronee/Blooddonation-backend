@@ -3,8 +3,6 @@ from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import status
 from rest_framework.utils.serializer_helpers import ReturnDict
 from websocket.serializers import FaqQuestionTranslationSerializer, FaqQuestionSerializer
-
-
 from websocket.models.faqQuestionTranslation import FaqQuestionTranslation
 from websocket.models.faqQuestion import FaqQuestion
 
