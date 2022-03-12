@@ -109,8 +109,8 @@ class CreateAppointmentMixin:
         }
         '''
 
-        if not Appointment.objects.filter(id = kwargs['id']).exists():
-            return "Appointment does no longer exist"
+        if Appointment.objects.filter(id = kwargs['id']).count() == 0:
+            return "Appointment no longer exist"
         instance = Appointment.objects.get(id= kwargs['id'])
         serializer = AppointmentSerializer(
             instance=instance, data=data, partial=True
