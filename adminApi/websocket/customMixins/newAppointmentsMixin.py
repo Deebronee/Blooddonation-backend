@@ -29,12 +29,10 @@ class NewAppointmentsMixin:
         lastAppID = lastApp.id
 
         if id > lastAppID:
-            print(id)
-            print(lastAppID)
             return [], status.HTTP_200_OK
 
         newAppointments = []
-        print("hello")
+    
 
         for x in range(lastAppID - id):
             myID = id + x + 1
