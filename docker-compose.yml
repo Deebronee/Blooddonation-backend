@@ -30,7 +30,6 @@ services:
       - API_KEY=pgAsiSKXwysRvg6ZnftqkLrVjdUlgvj7rBXPKemt8tT3RAPh6lbJM40hvAba
     depends_on:
       - db
-      - redis
 
   django-admin-api:
     build: ./adminApi/
