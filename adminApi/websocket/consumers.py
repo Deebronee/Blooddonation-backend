@@ -4,7 +4,6 @@ from websocket.customMixins.deleteAppointmentMixin import DeleteAppointmentMixin
 from websocket.customMixins.createAppointmentMixin import CreateAppointmentMixin
 from websocket.customMixins.getAllCapacitiesMixin import GetAllCapacitiesMixin
 from websocket.customMixins.getAllAppointmentsMixin import GetAllAppointmentsMixin
-from websocket.customMixins.deleteCapacityMixin import DeleteCapacityMixin
 from websocket.customMixins.createCapacitiesMixin import CreateCapacitiesMixin
 from websocket.customMixins.createFaqQuestionsMixin import CreateFaqQuestionsMixin
 from websocket.customMixins.createDonationQuestionsMixin import CreateDonationQuestionsMixin
@@ -24,7 +23,6 @@ class WebsocketConsumer(GenericAsyncAPIConsumer,
                         GetAllCapacitiesMixin, 
                         GetAllAppointmentsMixin, 
                         CreateAppointmentMixin, 
-                        DeleteCapacityMixin, 
                         CreateCapacitiesMixin, 
                         CreateFaqQuestionsMixin,
                         CreateDonationQuestionsMixin,
