@@ -17,10 +17,24 @@ class NewAppointmentsMixin:
     @action()
     def newAppointments(self, data : dict, **kwargs) -> Tuple[ReturnList, int]:
 
+        if not "id" in data:
+            return [], status.HTTP_200_OK
+        
+        if Appointment.objects.count() == 0:
+            return [], status.HTTP_200_OK
+
+
         id = data['id']
         lastApp = Appointment.objects.last()
         lastAppID = lastApp.id
+
+        if id > lastAppID:
+            print(id)
+            print(lastAppID)
+            return [], status.HTTP_200_OK
+
         newAppointments = []
+        print("hello")
 
         for x in range(lastAppID - id):
             myID = id + x + 1
