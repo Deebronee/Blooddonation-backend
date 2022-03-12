@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from websocket.models.adminSettings import AdminSettings
 from websocket.models.appointment import Appointment
 from websocket.models.capacity import Capacity
 from websocket.models.donationQuestion import DonationQuestion
@@ -17,7 +16,6 @@ from websocket.models.statistic import Statistic
 # how the admin interface looks like
 # Register your models here. To see them in the admin interface
 
-admin.site.register(AdminSettings)
 admin.site.register(Appointment)
 admin.site.register(Capacity)
 admin.site.register(DonationQuestion)

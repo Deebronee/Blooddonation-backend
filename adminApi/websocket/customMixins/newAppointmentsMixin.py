@@ -3,7 +3,8 @@ from django.test import TransactionTestCase
 from rest_framework.utils.serializer_helpers import ReturnList
 from rest_framework import status
 from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
-from websocket.serializers import AppointmentSerializer, FaqQuestionTranslationSerializer
+from websocket.serializers import AppointmentSerializer
+from django.db.models import Q
 
 from websocket.models.appointment import Appointment
 import sched, time
@@ -24,7 +25,8 @@ class NewAppointmentsMixin:
         for x in range(lastAppID - id):
             myID = id + x + 1
             appointment = Appointment.objects.get(id=myID)
-            serialized = AppointmentSerializer(appointment).data
-            newAppointments.append(serialized)
+            if appointment.request.status != "accepted":
+                serialized = AppointmentSerializer(appointment).data
+                newAppointments.append(serialized)
             
         return newAppointments, status.HTTP_200_OK
