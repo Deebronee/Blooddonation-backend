@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
 from websocket.serializers import AppointmentSerializer
 from django.db.models import Q
-
+from django.core.exceptions import ObjectDoesNotExist
 from websocket.models.appointment import Appointment
 import sched, time
 from .decorators import action
@@ -36,9 +36,13 @@ class NewAppointmentsMixin:
 
         for x in range(lastAppID - id):
             myID = id + x + 1
-            appointment = Appointment.objects.get(id=myID)
-            if appointment.request.status != "accepted":
-                serialized = AppointmentSerializer(appointment).data
-                newAppointments.append(serialized)
+            try:
+                appointment = Appointment.objects.get(id=myID)
+                if appointment.request.status != "accepted":
+                    serialized = AppointmentSerializer(appointment).data
+                    newAppointments.append(serialized)
+            except ObjectDoesNotExist:
+                continue
+
             
         return newAppointments, status.HTTP_200_OK
