@@ -41,7 +41,7 @@ class NewAppointmentsMixin:
                 if appointment.request.status != "accepted":
                     serialized = AppointmentSerializer(appointment).data
                     newAppointments.append(serialized)
-            except ObjectDoesNotExist:
+            except Appointment.DoesNotExist:
                 continue
 
             
