@@ -21,7 +21,7 @@ services:
     volumes:
       - /srv/blooddonation/db_light:/srv/database
     ports:
-      - "5000:8000"
+      - "5002:8000"
     environment:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
