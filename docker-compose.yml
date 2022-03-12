@@ -18,8 +18,6 @@ services:
   django-user-api:
     build: ./userApi/
     restart: always
-    volumes:
-      - /srv/blooddonation/db_light:/srv/database
     ports:
       - "5002:8000"
     environment:
@@ -33,8 +31,6 @@ services:
   django-admin-api:
     build: ./adminApi/
     restart: always
-    volumes:
-      - /srv/blooddonation/db_light:/srv/database
     ports:
       - "5001:8000"
     environment:
