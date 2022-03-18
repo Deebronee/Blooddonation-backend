@@ -126,30 +126,7 @@ class DonationQuestionTranslationSerializer(serializers.ModelSerializer):
         'donationQuestion',
         ] 
         
-'''
-    def create(self, validated_data):
-        donationQuestion_data = validated_data.pop('donationQuestion')
-        
-        newDonationQuestion = DonationQuestion.objects.create(**donationQuestion_data)
-        newDonationQuestionTranslation = DonationQuestionTranslation.objects.create(donationQuestion=newDonationQuestion, **validated_data)
-        
-        return newDonationQuestionTranslation
 
-    def update(self, instance, validated_data):
-        donationQuestion_data = validated_data.pop('donationQuestion')
-        newDonationQuestion = instance.donationQuestion
-
-        instance.head = validated_data.get('head', instance.head)
-        instance.body = validated_data.get('body', instance.body)
-        instance.language = validated_data.get('language', instance.language)
-        instance.save()
-
-        newDonationQuestion.position = donationQuestion_data.get('position', newDonationQuestion.position)
-        newDonationQuestion.isYesCorrect = donationQuestion_data.get('isYesCorrect', newDonationQuestion.isYesCorrect)
-        newDonationQuestion.save()
-
-        return instance
-'''
 class FaqQuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -170,29 +147,6 @@ class FaqQuestionTranslationSerializer(serializers.ModelSerializer):
         'language',
         'faqQuestion',
         ] 
-
-'''
-    def create(self, validated_data):
-        faqQuestion_data = validated_data.pop('faqQuestion')
-        newFaqQuestion = FaqQuestion.objects.create(**faqQuestion_data)
-        newFaqQuestionTranslation = FaqQuestionTranslation.objects.create(faqQuestion=newFaqQuestion, **validated_data)
-        return newFaqQuestionTranslation
-
-
-    def update(self, instance, validated_data):
-        faqQuestion_data = validated_data.pop('faqQuestion')
-        newFaqQuestion = instance.faqQuestion
-
-        instance.head = validated_data.get('head', instance.head)
-        instance.body = validated_data.get('body', instance.body)
-        instance.language = validated_data.get('language', instance.language)
-        instance.save()
-
-        newFaqQuestion.position = faqQuestion_data.get('position', newFaqQuestion.position)
-        newFaqQuestion.save()
-
-        return instance
-'''
 
 
 class StatisticSerializer(serializers.ModelSerializer):

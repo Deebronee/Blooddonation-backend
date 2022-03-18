@@ -12,7 +12,6 @@ from .decorators import action
 from djangochannelsrestframework.settings import api_settings
 
 class CreateFaqQuestionsMixin:
-    """ Create model mixin."""
 
     @action()
     def createFaqQuestions(self, data: dict, **kwargs) -> Tuple[ReturnDict, int]:
@@ -38,40 +37,4 @@ class CreateFaqQuestionsMixin:
     def perform_create(self, serializer, **kwargs):
         serializer.save()
 
-'''
-{
-	"action" : "createFaqQuestions",
-    "request_id" : 123,
-	"data" : 
-        {
-            "translationData" : 
-            [
-                {
-                    "id" : 1,
-                    "head" : "Test1",
-                    "body" : "Test1",
-                    "language" : "de_DE",
-                    "faqQuestion" : 1
-                },
-                {
-                    "id" : 2,
-                    "head" : "Test2",
-                    "body" : "Test2",
-                    "language" : "fr_FR",
-                    "faqQuestion" : 2
-                }
-            ],
-            "questionData" : 
-            [
-                {
-                    "id" : 1,
-                    "position" : 0
-                },
-                {
-                    "id" : 2,
-                    "position" : 1
-                }
-            ]
-        }
-}
-'''
+

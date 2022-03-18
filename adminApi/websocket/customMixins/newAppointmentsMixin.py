@@ -1,13 +1,9 @@
 from typing import Any, Tuple, Dict, OrderedDict
-from django.test import TransactionTestCase
 from rest_framework.utils.serializer_helpers import ReturnList
 from rest_framework import status
-from rest_framework.utils.serializer_helpers import ReturnDict, ReturnList
+from rest_framework.utils.serializer_helpers import ReturnList
 from websocket.serializers import AppointmentSerializer
-from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
 from websocket.models.appointment import Appointment
-import sched, time
 from .decorators import action
 from djangochannelsrestframework.settings import api_settings
 

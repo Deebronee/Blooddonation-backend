@@ -13,14 +13,6 @@ class GetAllAppointmentsMixin:
     @action()
     def getAllAppointments(self, **kwargs) -> Tuple[ReturnList, int]:
 
-        '''
-        send JSON to get all appointments
-        
-        {
-	        "action" : "getAllAppointments",
-            "request_id" : 123
-        }
-        '''
         queryset = Appointment.objects.all()
         serializer = AppointmentSerializer(
             instance=queryset, many=True

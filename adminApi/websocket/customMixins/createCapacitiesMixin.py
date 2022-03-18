@@ -10,7 +10,6 @@ from .decorators import action
 from djangochannelsrestframework.settings import api_settings
 
 class CreateCapacitiesMixin:
-    """ Create model mixin."""
 
     @action()
     def createCapacities(self, data: dict, **kwargs) -> Tuple[ReturnDict, int]:
@@ -25,20 +24,3 @@ class CreateCapacitiesMixin:
     def perform_create(self, serializer, **kwargs):
         serializer.save()
 
-'''
-{
-	"action" : "createCapacities",
-    "request_id" : 123,
-	"data" : 
-        [{	
-            "start" : "2022-01-01T12:00:00",
-            "duration" : 180,
-            "slots" : 30
-        },
-        {	
-            "start" : "2022-01-01T14:00:00",
-            "duration" : 120,
-            "slots" : 10
-        }]
-}
-'''

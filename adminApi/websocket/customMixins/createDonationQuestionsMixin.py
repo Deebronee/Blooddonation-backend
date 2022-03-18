@@ -12,7 +12,6 @@ from .decorators import action
 from djangochannelsrestframework.settings import api_settings
 
 class CreateDonationQuestionsMixin:
-    """ Create model mixin."""
 
     @action()
     def createDonationQuestions(self, data: dict, **kwargs) -> Tuple[ReturnDict, int]:
@@ -37,43 +36,3 @@ class CreateDonationQuestionsMixin:
 
     def perform_create(self, serializer, **kwargs):
         serializer.save()
-
-'''
-{
-	"action" : "createDonationQuestions",
-    "request_id" : 123,
-	"data" : 
-        {
-            "translationData" : 
-            [
-                {
-                    "id" : 1,
-                    "body" : "Test1",
-                    "language" : "de_DE",
-                    "donationQuestion" : 1
-                },
-                {
-                    "id" : 2,
-                    "head" : "Test2",
-                    "body" : "Test2",
-                    "language" : "fr_FR",
-                    "donationQuestion" : 2
-                }
-            ],
-            "questionData" : 
-            [
-                {
-                    "id" : 1,
-                    "position" : 0,
-                    "isYesCorrect" : True
-                },
-                {
-                    "id" : 2,
-                    "position" : 1,
-                    "isYesCorrect" : True
-
-                }
-            ]
-        }
-}
-'''

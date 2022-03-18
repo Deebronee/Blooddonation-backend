@@ -7,20 +7,9 @@ from .decorators import action
 from djangochannelsrestframework.settings import api_settings
 
 class DeleteAppointmentMixin:
-    """Delete model mixin"""
 
     @action()
     def deleteAppointment(self, **kwargs) -> Tuple[None, int]:
-
-        '''
-        sample JSON do delete capacity with pk 1 via socket
-
-        {
-            "action" : "deleteCapacity",
-            "request_id" : 123,
-            "id" : 1		
-        }
-        '''
         id = kwargs['id']
         instance = self.get_appointment(id)
         instance.delete()

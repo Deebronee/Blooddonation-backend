@@ -29,25 +29,6 @@ class CreateAppointmentMixin:
     @action()
     def createAppointment(self, data: QueryDict, **kwargs) -> Tuple[ReturnDict, int]:
 
-        '''
-        sample JSON to create appointment
-
-        {
-	        "action" : "createAppointment",
-            "request_id" : 123,
-	        "data" : 
-		        {
-        		        "start": "2022-01-11T12:00:00Z",
-        		        "duration": 60,
-        		        "person": 
-			                {
-           			            "name": "Websocket Tester",
-            			        "birthday": null,
-            			        "gender": ""
-        		            }
-		    }
-        }
-        '''
         dic = {'created': datetime.now(), 'status': 'accepted'}
         
         data['request'] = dic
@@ -90,24 +71,6 @@ class CreateAppointmentMixin:
     # TODO patch request via websocket
     @action()
     def updateAppointment(self, data: QueryDict, **kwargs) -> Tuple[ReturnDict, int]:
-
-        '''
-        sample JSON to update appointment
-
-        {
-	        "action" : "updateAppointment",
-            "request_id" : 123,
-            "id" : 1,
-	        "data" : 
-		        {
-        		    "request" : 
-                        {
-                            "created" : "2024-01-01T00:00:00",
-                            "status" : "confirmed"
-                        }
-		        }
-        }
-        '''
 
         if Appointment.objects.filter(id = kwargs['id']).count() == 0:
             return "Appointment no longer exists", status.HTTP_304_NOT_MODIFIED
